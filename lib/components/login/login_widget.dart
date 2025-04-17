@@ -66,6 +66,11 @@ class LoginWidget extends StatelessWidget {
                     fieldWidth: 60,
                     autoFocus: true,
                     filled: true,
+                    textStyle: GoogleFonts.poppins(
+                      fontSize: 22.0,
+                      fontWeight: FontWeight.w600,
+                      color: const Color.fromRGBO(33, 33, 33, 1),
+                    ),
                     fillColor: Colors.white,
                     onSubmit: (String verificationCode) {
                       print("OTP Entered: $verificationCode");
@@ -78,6 +83,11 @@ class LoginWidget extends StatelessWidget {
                       textAlign: TextAlign.center,
                       decoration: InputDecoration(
                         hintText: hintText,
+                        hintStyle: GoogleFonts.poppins(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.w600,
+                          color: const Color.fromRGBO(33, 33, 33, 1),
+                        ),
                         filled: true,
                         fillColor: Colors.white,
                         enabledBorder: OutlineInputBorder(

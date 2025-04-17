@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:gyaanplant_learning_app/styles/styles.dart';
 import 'package:gyaanplant_learning_app/views/assessmet/assessmet.dart';
+import 'package:gyaanplant_learning_app/views/course_video/course_completed.dart';
 import 'package:video_player/video_player.dart';
 
 class LessonVideoScreen extends StatefulWidget {
@@ -41,6 +43,64 @@ class _LessonVideoScreenState extends State<LessonVideoScreen> {
     );
   }
 
+  void _showCourseCompletedPopup() {
+    showDialog(
+      context: context,
+      builder: (_) => CustomPopup(
+        imageAsset: 'assets/images/home/course_completed.png',
+        title: 'Course Completed',
+        subtitle:
+            'You have successfully completed your Web Development Course by GyaanPlant',
+        buttonText: 'Continue',
+        onButtonPressed: () {
+          Navigator.of(context).pop();
+          _showAchievementPopup();
+        },
+      ),
+    );
+  }
+
+  void _showAchievementPopup() {
+    showDialog(
+      context: context,
+      builder: (_) => CustomPopup(
+        imageAsset: 'assets/images/home/5.png',
+        title: 'Achievement Accomplished!',
+        subtitle: 'NEW BADGE! Course Completed!',
+        buttonText: 'Share',
+        onButtonPressed: () {
+          Navigator.of(context).pop();
+          // You can implement share logic or navigation here
+        },
+        bottomWidget: const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.monetization_on, color: Colors.amber),
+            SizedBox(width: 4),
+            Text('+25  ', style: TextStyle(fontWeight: FontWeight.bold)),
+            SizedBox(width: 50),
+            Text('EXP',
+                style: TextStyle(
+                    color: Colors.green, fontWeight: FontWeight.bold)),
+            SizedBox(width: 4),
+            Text('+150', style: TextStyle(fontWeight: FontWeight.bold)),
+          ],
+        ),
+        titleStyle: GoogleFonts.jost(
+          fontSize: 22,
+          fontWeight: FontWeight.w600,
+          color: Color.fromRGBO(32, 34, 68, 1),
+        ),
+        subtitleStyle: GoogleFonts.mulish(
+          fontSize: 13,
+          fontWeight: FontWeight.bold,
+          color: Colors.black87,
+        ),
+        backgroundColor: const Color.fromRGBO(84, 84, 84, 1),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     bool isFirstLesson = widget.lessonNumber == 1;
@@ -66,7 +126,7 @@ class _LessonVideoScreenState extends State<LessonVideoScreen> {
                 fontFamily: 'Gilroy',
                 fontSize: 18.0,
                 color: Color.fromRGBO(0, 0, 0, 1),
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w500,
               ),
             ),
           ),
@@ -146,7 +206,7 @@ class _LessonVideoScreenState extends State<LessonVideoScreen> {
           const SizedBox(height: 16),
           Center(
             child: FractionallySizedBox(
-              widthFactor: 0.85,
+              widthFactor: 0.90,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color.fromRGBO(61, 123, 66, 1),
@@ -170,7 +230,7 @@ class _LessonVideoScreenState extends State<LessonVideoScreen> {
                   style: const TextStyle(
                     fontFamily: 'Gilroy',
                     fontSize: 16.0,
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.w500,
                     color: Color.fromRGBO(255, 255, 255, 1),
                   ),
                 ),
@@ -202,7 +262,7 @@ class _LessonVideoScreenState extends State<LessonVideoScreen> {
                         style: TextStyle(
                           fontFamily: 'Gilroy',
                           fontSize: 16.0,
-                          fontWeight: FontWeight.w700,
+                          fontWeight: FontWeight.w500,
                           color: Colors.white,
                         ),
                       ),
@@ -214,9 +274,13 @@ class _LessonVideoScreenState extends State<LessonVideoScreen> {
                   child: FractionallySizedBox(
                     widthFactor: 0.95,
                     child: ElevatedButton(
-                      onPressed: isLastLesson
-                          ? null
-                          : () => goToLesson(widget.lessonNumber + 1),
+                      onPressed: () {
+                        if (isLastLesson) {
+                          _showCourseCompletedPopup();
+                        } else {
+                          goToLesson(widget.lessonNumber + 1);
+                        }
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color.fromRGBO(61, 123, 66, 1),
                         padding: const EdgeInsets.symmetric(vertical: 16),
@@ -230,7 +294,7 @@ class _LessonVideoScreenState extends State<LessonVideoScreen> {
                         style: TextStyle(
                           fontFamily: 'Gilroy',
                           fontSize: 16.0,
-                          fontWeight: FontWeight.w700,
+                          fontWeight: FontWeight.w500,
                           color: Colors.white,
                         ),
                       ),
@@ -240,35 +304,6 @@ class _LessonVideoScreenState extends State<LessonVideoScreen> {
               ],
             ),
           ),
-
-          // Padding(
-          //   padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16),
-          //   child: Row(
-          //     children: [
-          //       Expanded(
-          //         child: OutlinedButton(
-          //           onPressed: isFirstLesson
-          //               ? null
-          //               : () => goToLesson(widget.lessonNumber - 1),
-          //           child: const Text("Previous"),
-          //         ),
-          //       ),
-          //       const SizedBox(width: 12),
-          //       Expanded(
-          //         child: ElevatedButton(
-          //           onPressed: isLastLesson
-          //               ? null
-          //               : () => goToLesson(widget.lessonNumber + 1),
-          //           style: ElevatedButton.styleFrom(
-          //             backgroundColor: const Color(0xFF2E7D32),
-          //             foregroundColor: Colors.white,
-          //           ),
-          //           child: const Text("Next Chapter"),
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          // ),
         ],
       ),
     );

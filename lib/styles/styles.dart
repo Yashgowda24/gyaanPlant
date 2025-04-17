@@ -10,7 +10,7 @@ const TextStyle kGilroy28700 = TextStyle(
 const TextStyle kGilroy16500 = TextStyle(
   fontFamily: 'Gilroy',
   fontSize: 16.0,
-  color: Color.fromRGBO(69, 69, 69, 1),
+  color: Color.fromRGBO(100, 100, 100, 1),
   fontWeight: FontWeight.w500,
 );
 
@@ -18,7 +18,7 @@ const TextStyle kHomeCourseStyle = TextStyle(
   fontFamily: 'Gilroy',
   fontSize: 20.0,
   color: Color.fromRGBO(24, 25, 31, 1),
-  fontWeight: FontWeight.w700,
+  fontWeight: FontWeight.w600,
 );
 
 const TextStyle kHomeSubHeadingStyle = TextStyle(
@@ -46,5 +46,5 @@ const TextStyle kSettingTextStyle = TextStyle(
   fontFamily: 'Gilroy',
   fontSize: 16.0,
   color: Color.fromRGBO(22, 22, 22, 1),
-  fontWeight: FontWeight.w600,
+  fontWeight: FontWeight.w500,
 );

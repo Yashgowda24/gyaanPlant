@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gyaanplant_learning_app/styles/styles.dart';
 import 'package:gyaanplant_learning_app/views/assessmet/assessmet.dart';
 import 'package:gyaanplant_learning_app/views/course_video/course_video.dart';
+import 'package:gyaanplant_learning_app/views/course_video/my_course.dart';
 import 'package:gyaanplant_learning_app/views/library/library.dart';
 import 'package:gyaanplant_learning_app/views/user_profile/profile.dart';
 
@@ -112,12 +114,6 @@ class HomeContent extends StatelessWidget {
             ),
           ),
           LearningProgressCard(),
-          // Center(
-          //   child: SvgPicture.asset(
-          //     'assets/images/home/Frame14.svg',
-          //     height: 50,
-          //   ),
-          // ),
           const SizedBox(height: 20),
           CourseSection(
             title: 'Course 1',
@@ -263,12 +259,16 @@ class LessonCard extends StatelessWidget {
   final String image;
   final String title;
   final VoidCallback onPressed;
+  final bool isMyCourseScreen;
+  final String progressText;
 
   const LessonCard({
     super.key,
     required this.image,
     required this.title,
     required this.onPressed,
+    this.isMyCourseScreen = false,
+    this.progressText = '',
   });
 
   @override
@@ -301,6 +301,57 @@ class LessonCard extends StatelessWidget {
               'Gyaan Plant',
               style: kGyaanPlantText,
             ),
+            if (isMyCourseScreen)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: FractionallySizedBox(
+                        widthFactor: 0.87,
+                        child: Stack(
+                          children: [
+                            Container(
+                              height: 6,
+                              color: Colors.grey.shade200,
+                            ),
+                            Container(
+                              height: 6,
+                              width: MediaQuery.of(context).size.width * 0.7,
+                              decoration: const BoxDecoration(
+                                gradient: LinearGradient(
+                                  colors: [
+                                    Color.fromRGBO(255, 255, 255, 0),
+                                    Color.fromRGBO(255, 81, 6, 1),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  const Text(
+                    'Chapters Completed',
+                    style: kGyaanPlantText,
+                  ),
+                  SizedBox(
+                    height: 4,
+                  ),
+                  Text(
+                    progressText,
+                    style: const TextStyle(
+                      fontFamily: 'Gilroy',
+                      fontSize: 22.0,
+                      color: Color.fromRGBO(0, 0, 0, 1),
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              )
           ],
         ),
       ),
@@ -337,7 +388,7 @@ class LearningProgressCard extends StatelessWidget {
           SizedBox(
             height: 10,
           ),
-          const Row(
+          Row(
             children: [
               Text(
                 "Learned today",
@@ -349,12 +400,22 @@ class LearningProgressCard extends StatelessWidget {
                 ),
               ),
               Spacer(),
-              Text(
-                "My courses",
-                style: TextStyle(
-                  fontFamily: 'Gilroy',
-                  color: Color.fromRGBO(61, 92, 255, 1),
-                  fontWeight: FontWeight.w400,
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MyCourse(),
+                    ),
+                  );
+                },
+                child: Text(
+                  "My courses",
+                  style: TextStyle(
+                    fontFamily: 'Gilroy',
+                    color: Color.fromRGBO(61, 92, 255, 1),
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
               ),
             ],
@@ -381,15 +442,6 @@ class LearningProgressCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 12),
-          // ClipRRect(
-          //   borderRadius: BorderRadius.circular(8),
-          //   child: LinearProgressIndicator(
-          //     value: progress,
-          //     minHeight: 6,
-          //     backgroundColor: Colors.grey.shade200,
-          //     valueColor: AlwaysStoppedAnimation<Color>(Colors.orange),
-          //   ),
-          // ),
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: Stack(
@@ -412,7 +464,7 @@ class LearningProgressCard extends StatelessWidget {
                 ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

@@ -15,9 +15,9 @@ class OTPScreen extends StatelessWidget {
           image:
               Image.asset('assets/images/onboard/GyaanPlant_Latest_Logo_1.png'),
           heading: 'Enter OTP',
-          subText: 'Verify Aadhaat OTP',
+          subText: 'OTP sent on your Mobile Number',
           buttonText: 'Continue',
-          hintText: 'Enter your number',
+          hintText: '',
           isOtpField: true,
           onPressed: () {
             Navigator.push(
