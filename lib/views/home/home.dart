@@ -220,11 +220,26 @@ class HomeContent extends StatelessWidget {
   }
 }
 
-class CourseSection extends StatelessWidget {
+class CourseSection extends StatefulWidget {
   final String title;
   final List<LessonCard> lessons;
+  final VoidCallback? onSeeMorePressed;
+  final bool isSeeMoreExpanded;
 
-  const CourseSection({super.key, required this.title, required this.lessons});
+  const CourseSection({
+    super.key,
+    required this.title,
+    required this.lessons,
+    this.onSeeMorePressed,
+    this.isSeeMoreExpanded = false,
+  });
+
+  @override
+  State<CourseSection> createState() => _CourseSectionState();
+}
+
+class _CourseSectionState extends State<CourseSection> {
+  bool expanded = false;
 
   @override
   Widget build(BuildContext context) {
@@ -236,19 +251,24 @@ class CourseSection extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              title,
+              widget.title,
               style: kHomeCourseStyle,
             ),
-            const Text(
-              'SEE MORE',
-              style: kSeeMoreStyle,
-            )
+            if (widget.onSeeMorePressed != null)
+              GestureDetector(
+                onTap: widget.onSeeMorePressed,
+                child: Text(
+                  widget.isSeeMoreExpanded ? 'SEE LESS' : 'SEE MORE',
+                  style: kSeeMoreStyle,
+                ),
+              )
           ],
         ),
         const SizedBox(height: 10),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: lessons,
+        Wrap(
+          spacing: 10,
+          runSpacing: 10,
+          children: widget.lessons,
         ),
       ],
     );

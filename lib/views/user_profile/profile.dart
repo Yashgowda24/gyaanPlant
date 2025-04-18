@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gyaanplant_learning_app/views/settings/setting_screen.dart';
@@ -133,15 +132,31 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: const [
+                        children: [
                           Text("Level 5",
                               style: TextStyle(fontWeight: FontWeight.w600)),
-                          Text(
-                            "EXP 150 / 5000",
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold),
-                          ),
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: 'EXP ',
+                                  style: GoogleFonts.readexPro(
+                                    fontSize: 12.0,
+                                    fontWeight: FontWeight.w400,
+                                    color: Color.fromRGBO(34, 197, 94, 1),
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: '150 / 5000',
+                                  style: GoogleFonts.readexPro(
+                                    fontSize: 12.0,
+                                    fontWeight: FontWeight.w400,
+                                    color: Color.fromRGBO(38, 50, 58, 1),
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
                         ],
                       ),
                       const SizedBox(height: 6),
@@ -168,12 +183,12 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 child: Row(
                   children: [
                     _buildStatBox(
-                        icon: Icons.local_fire_department,
+                        icon: Image.asset('assets/images/home/Fire.png'),
                         value: '3',
                         label: 'Courses Completed'),
                     const SizedBox(width: 12),
                     _buildStatBox(
-                        icon: Icons.monetization_on,
+                        icon: Image.asset('assets/images/home/Coins.png'),
                         value: '33',
                         label: 'Points'),
                   ],
@@ -183,57 +198,140 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               const SizedBox(height: 40),
 
               // Tabs: Badges | Stats
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              //   child: Column(
+              //     children: [
+              //       Row(
+              //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              //         children: [
+              //           GestureDetector(
+              //             onTap: () => setState(() => showBadges = true),
+              //             child: Column(
+              //               children: [
+              //                 const Text(
+              //                   "Badges",
+              //                   style: TextStyle(
+              //                     fontFamily: 'Gilroy',
+              //                     fontSize: 18.0,
+              //                     color: Color.fromRGBO(0, 0, 0, 1),
+              //                     fontWeight: FontWeight.w400,
+              //                   ),
+              //                 ),
+              //                 const SizedBox(height: 4),
+              //                 if (showBadges)
+              //                   Container(
+              //                     height: 2,
+              //                     width: 60,
+              //                     color: Colors.green,
+              //                   )
+              //               ],
+              //             ),
+              //           ),
+              //           const SizedBox(width: 20),
+              //           GestureDetector(
+              //             onTap: () => setState(() => showBadges = false),
+              //             child: Column(
+              //               children: [
+              //                 const Text(
+              //                   "Stats",
+              //                   style: TextStyle(
+              //                     fontFamily: 'Gilroy',
+              //                     fontSize: 18.0,
+              //                     color: Color.fromRGBO(0, 0, 0, 1),
+              //                     fontWeight: FontWeight.w400,
+              //                   ),
+              //                 ),
+              //                 const SizedBox(height: 4),
+              //                 if (!showBadges)
+              //                   Container(
+              //                     height: 2,
+              //                     width: 60,
+              //                     color: Colors.green,
+              //                   )
+              //               ],
+              //             ),
+              //           ),
+              //         ],
+              //       ),
+              //       Divider(),
+              //     ],
+              //   ),
+              // ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                child: Column(
                   children: [
-                    GestureDetector(
-                      onTap: () => setState(() => showBadges = true),
-                      child: Column(
-                        children: [
-                          const Text(
-                            "Badges",
-                            style: TextStyle(
-                              fontFamily: 'Gilroy',
-                              fontSize: 18.0,
-                              color: Color.fromRGBO(0, 0, 0, 1),
-                              fontWeight: FontWeight.w500,
-                            ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        GestureDetector(
+                          onTap: () => setState(() => showBadges = true),
+                          child: Column(
+                            children: [
+                              Text(
+                                "Badges",
+                                style: TextStyle(
+                                  fontFamily: 'Gilroy',
+                                  fontSize: 18.0,
+                                  color: Colors.black,
+                                  fontWeight: showBadges
+                                      ? FontWeight.w600
+                                      : FontWeight.w400,
+                                ),
+                              ),
+                            ],
                           ),
-                          const SizedBox(height: 4),
-                          if (showBadges)
-                            Container(
-                              height: 2,
-                              width: 60,
-                              color: Colors.green,
-                            )
-                        ],
-                      ),
+                        ),
+                        SizedBox(
+                          height: 25,
+                        ),
+                        GestureDetector(
+                          onTap: () => setState(() => showBadges = false),
+                          child: Column(
+                            children: [
+                              Text(
+                                "Stats",
+                                style: TextStyle(
+                                  fontFamily: 'Gilroy',
+                                  fontSize: 18.0,
+                                  color: Colors.black,
+                                  fontWeight: !showBadges
+                                      ? FontWeight.w600
+                                      : FontWeight.w400,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(width: 20),
-                    GestureDetector(
-                      onTap: () => setState(() => showBadges = false),
-                      child: Column(
-                        children: [
-                          const Text(
-                            "Stats",
-                            style: TextStyle(
-                              fontFamily: 'Gilroy',
-                              fontSize: 18.0,
-                              color: Color.fromRGBO(0, 0, 0, 1),
-                              fontWeight: FontWeight.w500,
-                            ),
+
+                    const SizedBox(height: 6),
+
+                    // Divider + indicator
+                    Stack(
+                      children: [
+                        // Base grey divider
+                        Container(
+                          height: 2,
+                          color: const Color.fromRGBO(230, 230, 230, 1),
+                        ),
+
+                        // Animated green line indicator (half width)
+                        Align(
+                          alignment: showBadges
+                              ? Alignment.centerLeft
+                              : Alignment.centerRight,
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 250),
+                            height: 2,
+                            width: MediaQuery.of(context).size.width / 2 -
+                                32, // Subtract padding
+                            color: Colors.green,
                           ),
-                          const SizedBox(height: 4),
-                          if (!showBadges)
-                            Container(
-                              height: 2,
-                              width: 60,
-                              color: Colors.green,
-                            )
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -255,27 +353,38 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   }
 
   Widget _buildStatBox(
-      {required IconData icon, required String value, required String label}) {
+      {required Image icon, required String value, required String label}) {
     return Expanded(
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding:
+            const EdgeInsets.only(top: 16, left: 14, right: 14, bottom: 16),
         decoration: BoxDecoration(
-          color: const Color(0xFFE6F0E9),
+          color: const Color.fromRGBO(135, 181, 139, 0.3),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(icon, color: Colors.deepOrange),
+            icon,
             const SizedBox(width: 5),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(value,
-                    style: const TextStyle(fontWeight: FontWeight.bold)),
+                Text(
+                  value,
+                  style: GoogleFonts.readexPro(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w500,
+                    color: Color.fromRGBO(38, 50, 58, 1),
+                  ),
+                ),
                 const SizedBox(height: 2),
                 Text(label,
-                    style: const TextStyle(fontSize: 12, color: Colors.black54),
+                    style: GoogleFonts.readexPro(
+                      fontSize: 12.0,
+                      fontWeight: FontWeight.w200,
+                      color: Color.fromRGBO(38, 50, 58, 1),
+                    ),
                     textAlign: TextAlign.center),
               ],
             ),
@@ -309,7 +418,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
   Widget _buildStatsContent() {
     return Container(
-      padding: const EdgeInsets.all(24),
+      padding: const EdgeInsets.only(top: 24, bottom: 24, left: 20, right: 20),
       decoration: BoxDecoration(
         color: Color.fromRGBO(214, 250, 221, 1),
         borderRadius: BorderRadius.circular(12),
@@ -359,18 +468,29 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         children: [
                           Text(
                             '5',
-                            style: TextStyle(color: Colors.black, fontSize: 32),
+                            style: GoogleFonts.rubik(
+                              fontSize: 32.0,
+                              color: Color.fromRGBO(12, 9, 42, 1),
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
-                          Icon(CupertinoIcons.pencil),
+                          Image.asset('assets/images/home/pen.png'),
                         ],
                       ),
-                      Text('Courses Completed'),
+                      Text(
+                        'Courses Completed',
+                        style: GoogleFonts.rubik(
+                          fontSize: 14.0,
+                          color: Color.fromRGBO(12, 9, 42, 1),
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
                     ],
                   ),
                 ),
               ),
               SizedBox(
-                width: 20,
+                width: 10,
               ),
               Expanded(
                 child: Container(
@@ -387,17 +507,22 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                         children: [
                           Text(
                             '21',
-                            style: TextStyle(color: Colors.white, fontSize: 32),
+                            style: GoogleFonts.rubik(
+                              fontSize: 32.0,
+                              color: Color.fromRGBO(255, 255, 255, 1),
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
-                          Icon(
-                            CupertinoIcons.play_rectangle,
-                            color: Colors.white,
-                          ),
+                          Image.asset('assets/images/home/badge.png'),
                         ],
                       ),
                       Text(
                         'Quiz won',
-                        style: TextStyle(color: Colors.white),
+                        style: GoogleFonts.rubik(
+                          fontSize: 14.0,
+                          color: Color.fromRGBO(255, 255, 255, 1),
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
                     ],
                   ),
