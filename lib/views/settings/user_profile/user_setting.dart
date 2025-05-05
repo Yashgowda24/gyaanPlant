@@ -70,12 +70,12 @@ class _UserProfileSettingScreenState extends State<UserProfileSettingScreen> {
           ),
         ),
       ),
-      body: Center(
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Center(
           child: Column(
             children: [
               SizedBox(
-                height: 15.0,
+                height: 40.0,
               ),
               Stack(
                 children: [
@@ -96,6 +96,7 @@ class _UserProfileSettingScreenState extends State<UserProfileSettingScreen> {
                 ],
               ),
               Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   SizedBox(
                     height: 30.0,
@@ -112,10 +113,10 @@ class _UserProfileSettingScreenState extends State<UserProfileSettingScreen> {
                     hintText: 'Enter Email',
                     keyboardType: TextInputType.emailAddress,
                   ),
-                  TextWidget(
-                    hintText: 'Aadhaar Number',
-                    keyboardType: TextInputType.emailAddress,
-                  ),
+                  // TextWidget(
+                  //   hintText: 'Aadhaar Number',
+                  //   keyboardType: TextInputType.emailAddress,
+                  // ),
                   GreenButton(
                     text: 'Save Chages',
                     onPressed: () {

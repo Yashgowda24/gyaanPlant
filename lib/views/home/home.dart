@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:gyaanplant_learning_app/styles/styles.dart';
 import 'package:gyaanplant_learning_app/views/assessmet/assessmet.dart';
 import 'package:gyaanplant_learning_app/views/course_video/course_video.dart';
-import 'package:gyaanplant_learning_app/views/course_video/my_course.dart';
 import 'package:gyaanplant_learning_app/views/library/library.dart';
+import 'package:gyaanplant_learning_app/views/main_navigation.dart';
 import 'package:gyaanplant_learning_app/views/user_profile/profile.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -225,6 +225,8 @@ class CourseSection extends StatefulWidget {
   final List<LessonCard> lessons;
   final VoidCallback? onSeeMorePressed;
   final bool isSeeMoreExpanded;
+  final bool showSeeMore; // 👈 NEW: Always show text
+  final bool isInteractive; // 👈 NEW: Should it respond
 
   const CourseSection({
     super.key,
@@ -232,6 +234,8 @@ class CourseSection extends StatefulWidget {
     required this.lessons,
     this.onSeeMorePressed,
     this.isSeeMoreExpanded = false,
+    this.showSeeMore = true, // 👈 Default: true
+    this.isInteractive = true, // 👈 Default: true
   });
 
   @override
@@ -254,14 +258,23 @@ class _CourseSectionState extends State<CourseSection> {
               widget.title,
               style: kHomeCourseStyle,
             ),
-            if (widget.onSeeMorePressed != null)
+            // if (widget.onSeeMorePressed != null)
+            //   GestureDetector(
+            //     onTap: widget.onSeeMorePressed,
+            //     child: Text(
+            //       widget.isSeeMoreExpanded ? 'SEE LESS' : 'SEE MORE',
+            //       style: kSeeMoreStyle,
+            //     ),
+            //   )
+            /// 👇 This block handles SEE MORE text
+            if (widget.showSeeMore)
               GestureDetector(
-                onTap: widget.onSeeMorePressed,
+                onTap: widget.isInteractive ? widget.onSeeMorePressed : null,
                 child: Text(
                   widget.isSeeMoreExpanded ? 'SEE LESS' : 'SEE MORE',
                   style: kSeeMoreStyle,
                 ),
-              )
+              ),
           ],
         ),
         const SizedBox(height: 10),
@@ -411,29 +424,31 @@ class LearningProgressCard extends StatelessWidget {
           Row(
             children: [
               Text(
-                "Learned today",
-                style: TextStyle(
-                  fontFamily: 'Gilroy',
-                  fontSize: 14.0,
-                  color: Color.fromRGBO(133, 133, 151, 1),
-                  fontWeight: FontWeight.w400,
+                "Web Development",
+                style: GoogleFonts.poppins(
+                  fontSize: 12.0,
+                  color: Color.fromRGBO(0, 0, 0, 1),
+                  fontWeight: FontWeight.w600,
                 ),
               ),
               Spacer(),
               GestureDetector(
                 onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MyCourse(),
-                    ),
-                  );
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  // builder: (context) => MyCourse(),
+                  //   ),
+                  // );
+                  (context.findAncestorStateOfType<MainNavigationState>())
+                      ?.openCourseScreen();
                 },
                 child: Text(
-                  "My courses",
+                  "MY COURSES",
                   style: TextStyle(
                     fontFamily: 'Gilroy',
-                    color: Color.fromRGBO(61, 92, 255, 1),
+                    fontSize: 12.0,
+                    color: Color.fromRGBO(0, 31, 142, 1),
                     fontWeight: FontWeight.w400,
                   ),
                 ),
@@ -444,17 +459,17 @@ class LearningProgressCard extends StatelessWidget {
           RichText(
             text: TextSpan(
               text: '${learnedMinutes.toInt()}min',
-              style: const TextStyle(
+              style: GoogleFonts.poppins(
                 fontSize: 20,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
+                fontWeight: FontWeight.w700,
+                color: Color.fromRGBO(31, 31, 57, 1),
               ),
               children: [
                 TextSpan(
                   text: ' / ${totalMinutes.toInt()}min',
-                  style: const TextStyle(
-                    fontSize: 16,
-                    color: Colors.grey,
+                  style: GoogleFonts.poppins(
+                    fontSize: 10,
+                    color: Color.fromRGBO(133, 133, 151, 1),
                     fontWeight: FontWeight.normal,
                   ),
                 ),
@@ -477,7 +492,7 @@ class LearningProgressCard extends StatelessWidget {
                     gradient: LinearGradient(
                       colors: [
                         Color.fromRGBO(255, 255, 255, 0),
-                        Color.fromRGBO(255, 81, 6, 1),
+                        Color.fromRGBO(61, 123, 68, 1),
                       ],
                     ),
                   ),

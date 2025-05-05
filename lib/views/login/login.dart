@@ -1,9 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:gyaanplant_learning_app/components/login/login_widget.dart';
+import 'package:gyaanplant_learning_app/urls/url.dart';
 import 'package:gyaanplant_learning_app/views/login/otp.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController _phoneController = TextEditingController();
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _phoneController.dispose();
+  }
+
+  void _handleSendOtp() async {
+    final phoneNumber = _phoneController.text.trim();
+
+    if (phoneNumber.isNotEmpty) {
+      await AppUrl.sendOtp(phoneNumber);
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('OTP sent successfully!'),
+        ),
+      );
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => OTPScreen(
+            phoneNumber: phoneNumber,
+          ),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please enter your mobile number!'),
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,14 +62,8 @@ class LoginScreen extends StatelessWidget {
           buttonText: 'Submit',
           hintText: 'Enter your number',
           isOtpField: false,
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => OTPScreen(),
-              ),
-            );
-          },
+          phoneNumberController: _phoneController,
+          onPressed: _handleSendOtp,
         ),
       ),
     );

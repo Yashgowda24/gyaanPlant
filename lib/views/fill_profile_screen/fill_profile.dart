@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gyaanplant_learning_app/components/learning_goals/text_subText_widget.dart';
 import 'package:gyaanplant_learning_app/components/login/green_button.dart';
-import 'package:gyaanplant_learning_app/views/home/home.dart';
+import 'package:gyaanplant_learning_app/views/main_navigation.dart';
 
 class FillProfileScreen extends StatelessWidget {
   const FillProfileScreen({super.key});
@@ -36,11 +36,15 @@ class FillProfileScreen extends StatelessWidget {
                 GreenButton(
                   text: 'Continue',
                   onPressed: () {
-                    Navigator.push(
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => HomeScreen(),
+                    //   ),
+                    // );
+                    Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => HomeScreen(),
-                      ),
+                      MaterialPageRoute(builder: (_) => const MainNavigation()),
                     );
                   },
                 )

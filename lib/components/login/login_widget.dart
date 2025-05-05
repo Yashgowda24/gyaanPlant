@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:gyaanplant_learning_app/components/login/green_button.dart';
 import 'package:gyaanplant_learning_app/styles/styles.dart';
 
-class LoginWidget extends StatelessWidget {
+class LoginWidget extends StatefulWidget {
   final Image image;
   final String heading;
   final String subText;
@@ -15,6 +15,8 @@ class LoginWidget extends StatelessWidget {
   final bool showTextField;
   final bool showButton;
   final Widget? customChild;
+  final void Function(String)? onOtpSubmit;
+  final TextEditingController? phoneNumberController;
 
   LoginWidget({
     required this.image,
@@ -27,27 +29,34 @@ class LoginWidget extends StatelessWidget {
     this.showTextField = true,
     this.showButton = true,
     this.customChild,
+    this.phoneNumberController,
+    this.onOtpSubmit,
   });
 
+  @override
+  State<LoginWidget> createState() => _LoginWidgetState();
+}
+
+class _LoginWidgetState extends State<LoginWidget> {
   @override
   Widget build(BuildContext context) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          image,
+          widget.image,
           SizedBox(
             height: 60,
           ),
           Text(
-            heading,
+            widget.heading,
             style: kGilroy28700,
           ),
           SizedBox(
             height: 30,
           ),
           Text(
-            subText,
+            widget.subText,
             style: kGilroy16500,
             textAlign: TextAlign.center,
           ),
@@ -55,8 +64,8 @@ class LoginWidget extends StatelessWidget {
             height: 30,
           ),
           // Conditionally show text field or OTP field
-          if (showTextField)
-            isOtpField
+          if (widget.showTextField)
+            widget.isOtpField
                 ? OtpTextField(
                     numberOfFields: 4,
                     borderColor: Color.fromRGBO(217, 217, 217, 1),
@@ -64,7 +73,7 @@ class LoginWidget extends StatelessWidget {
                     showFieldAsBox: true,
                     borderRadius: BorderRadius.circular(12),
                     fieldWidth: 60,
-                    autoFocus: true,
+                    autoFocus: false,
                     filled: true,
                     textStyle: GoogleFonts.poppins(
                       fontSize: 22.0,
@@ -72,17 +81,16 @@ class LoginWidget extends StatelessWidget {
                       color: const Color.fromRGBO(33, 33, 33, 1),
                     ),
                     fillColor: Colors.white,
-                    onSubmit: (String verificationCode) {
-                      print("OTP Entered: $verificationCode");
-                    },
+                    onSubmit: widget.onOtpSubmit,
                   )
                 : Container(
                     height: 55,
                     width: MediaQuery.of(context).size.width * 0.86,
                     child: TextField(
+                      controller: widget.phoneNumberController,
                       textAlign: TextAlign.center,
                       decoration: InputDecoration(
-                        hintText: hintText,
+                        hintText: widget.hintText,
                         hintStyle: GoogleFonts.poppins(
                           fontSize: 16.0,
                           fontWeight: FontWeight.w600,
@@ -111,18 +119,18 @@ class LoginWidget extends StatelessWidget {
                       keyboardType: TextInputType.phone,
                     ),
                   ),
-          if (showTextField) const SizedBox(height: 30),
+          if (widget.showTextField) const SizedBox(height: 30),
 
-          if (customChild != null) ...[
+          if (widget.customChild != null) ...[
             SizedBox(height: 30),
-            customChild!,
+            widget.customChild!,
           ],
 
           // Conditionally show button
-          if (showButton)
+          if (widget.showButton)
             GreenButton(
-              text: buttonText,
-              onPressed: onPressed,
+              text: widget.buttonText,
+              onPressed: widget.onPressed,
             ),
         ],
       ),

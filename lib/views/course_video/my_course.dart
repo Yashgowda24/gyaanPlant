@@ -68,8 +68,8 @@ class MyCourse extends StatelessWidget {
                                 text: 'Course Completed - ',
                                 style: GoogleFonts.poppins(
                                   fontSize: 12.0,
-                                  fontWeight: FontWeight.w400,
                                   color: Color.fromRGBO(133, 133, 151, 1),
+                                  fontWeight: FontWeight.w400,
                                 ),
                               ),
                               TextSpan(
@@ -105,20 +105,20 @@ class MyCourse extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     RichText(
-                      text: const TextSpan(
+                      text: TextSpan(
                         text: '46min',
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
+                        style: GoogleFonts.poppins(
+                          fontSize: 20.0,
+                          color: Color.fromRGBO(31, 31, 57, 1),
+                          fontWeight: FontWeight.w700,
                         ),
                         children: [
                           TextSpan(
                             text: ' / 60min',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.grey,
-                              fontWeight: FontWeight.normal,
+                            style: GoogleFonts.poppins(
+                              fontSize: 12.0,
+                              color: Color.fromRGBO(133, 133, 151, 1),
+                              fontWeight: FontWeight.w400,
                             ),
                           ),
                         ],
@@ -142,7 +142,7 @@ class MyCourse extends StatelessWidget {
                               gradient: LinearGradient(
                                 colors: [
                                   Color.fromRGBO(255, 255, 255, 0),
-                                  Color.fromRGBO(255, 81, 6, 1),
+                                  Color.fromRGBO(61, 123, 68, 1),
                                 ],
                               ),
                             ),
@@ -190,45 +190,48 @@ class MyCourse extends StatelessWidget {
                   ),
                 ],
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  LessonCard(
-                    isMyCourseScreen: true,
-                    progressText: '16/21',
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => LessonVideoScreen(
-                            lessonNumber: 1,
+              Padding(
+                padding: const EdgeInsets.only(right: 15.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    LessonCard(
+                      isMyCourseScreen: true,
+                      progressText: '16/21',
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LessonVideoScreen(
+                              lessonNumber: 1,
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                    image: 'assets/images/home/unsplash_KW3m50XRhjk_3.png',
-                    title: 'UI/UX Design',
-                  ),
-                  SizedBox(
-                    width: 15.0,
-                  ),
-                  LessonCard(
-                    isMyCourseScreen: true,
-                    progressText: '16/21',
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => LessonVideoScreen(
-                            lessonNumber: 1,
+                        );
+                      },
+                      image: 'assets/images/home/unsplash_KW3m50XRhjk_3.png',
+                      title: 'UI/UX Design',
+                    ),
+                    SizedBox(
+                      width: 8.0,
+                    ),
+                    LessonCard(
+                      isMyCourseScreen: true,
+                      progressText: '16/21',
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => LessonVideoScreen(
+                              lessonNumber: 1,
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                    image: 'assets/images/home/unsplash_KW3m50XRhjk_3.png',
-                    title: 'UI/UX Design',
-                  ),
-                ],
+                        );
+                      },
+                      image: 'assets/images/home/unsplash_KW3m50XRhjk_3.png',
+                      title: 'UI/UX Design',
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
