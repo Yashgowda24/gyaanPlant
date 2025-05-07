@@ -11,87 +11,93 @@ class SettingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(kToolbarHeight),
-        child: Container(
-          decoration: const BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                blurRadius: 15.0,
-                spreadRadius: 0,
-                offset: Offset(0, 0),
-                color: Color.fromRGBO(179, 32, 115, 0.18),
-              )
-            ],
-          ),
-          child: AppBar(
-            title: const Text(
-              'Settings',
-              style: TextStyle(
-                fontFamily: 'Gilroy',
-                fontSize: 18.0,
-                color: Color.fromRGBO(0, 0, 0, 1),
-                fontWeight: FontWeight.w500,
+    return WillPopScope(
+      onWillPop: () async {
+        Navigator.pop(context, true); // ✅ Send back "true" if user goes back
+        return false; // Prevent default pop, we already handled it
+      },
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(kToolbarHeight),
+          child: Container(
+            decoration: const BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  blurRadius: 15.0,
+                  spreadRadius: 0,
+                  offset: Offset(0, 0),
+                  color: Color.fromRGBO(179, 32, 115, 0.18),
+                )
+              ],
+            ),
+            child: AppBar(
+              title: const Text(
+                'Settings',
+                style: TextStyle(
+                  fontFamily: 'Gilroy',
+                  fontSize: 18.0,
+                  color: Color.fromRGBO(0, 0, 0, 1),
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
           ),
         ),
-      ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.only(top: 30.0),
-          child: Column(
-            children: [
-              SettingDisplayWidget(
-                icon: CupertinoIcons.person_circle,
-                text: 'My profile',
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => UserProfileSettingScreen(),
-                    ),
-                  );
-                },
-              ),
-              SettingDisplayWidget(
-                icon: CupertinoIcons.doc_append,
-                text: 'My Certificates',
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MyCertificateScreen(),
-                    ),
-                  );
-                },
-              ),
-              SettingDisplayWidget(
-                icon: CupertinoIcons.doc_plaintext,
-                text: 'Leaderboard',
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => LeaderboardScreen(),
-                    ),
-                  );
-                },
-              ),
-              SettingDisplayWidget(
-                icon: Icons.exit_to_app,
-                text: 'Logout',
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => LoginScreen(),
-                    ),
-                  );
-                },
-              ),
-            ],
+        body: Center(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 30.0),
+            child: Column(
+              children: [
+                SettingDisplayWidget(
+                  icon: CupertinoIcons.person_circle,
+                  text: 'My profile',
+                  onPressed: () async {
+                    final result = await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => UserProfileSettingScreen(),
+                      ),
+                    );
+                  },
+                ),
+                SettingDisplayWidget(
+                  icon: CupertinoIcons.doc_append,
+                  text: 'My Certificates',
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MyCertificateScreen(),
+                      ),
+                    );
+                  },
+                ),
+                SettingDisplayWidget(
+                  icon: CupertinoIcons.doc_plaintext,
+                  text: 'Leaderboard',
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => LeaderboardScreen(),
+                      ),
+                    );
+                  },
+                ),
+                SettingDisplayWidget(
+                  icon: Icons.exit_to_app,
+                  text: 'Logout',
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => LoginScreen(),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
           ),
         ),
       ),

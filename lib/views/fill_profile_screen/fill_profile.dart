@@ -58,10 +58,12 @@ class FillProfileScreen extends StatelessWidget {
 class TextWidget extends StatelessWidget {
   final String hintText;
   final TextInputType keyboardType;
+  TextEditingController? controller;
 
-  const TextWidget({
+  TextWidget({
     required this.hintText,
     required this.keyboardType,
+    this.controller,
   });
 
   @override
@@ -99,7 +101,7 @@ class TextWidget extends StatelessWidget {
               ),
               TextField(
                 keyboardType: keyboardType,
-                // controller: controller,
+                controller: controller,
                 style: TextStyle(
                   fontFamily: 'Gilroy',
                   fontSize: 17.0,

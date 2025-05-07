@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gyaanplant_learning_app/views/settings/setting_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({super.key});
@@ -11,6 +12,24 @@ class UserProfileScreen extends StatefulWidget {
 
 class _UserProfileScreenState extends State<UserProfileScreen> {
   bool showBadges = true;
+  String? _userName;
+  String? _userEmail;
+  String? _userPhoto;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadUser();
+  }
+
+  Future<void> _loadUser() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _userName = prefs.getString('userName');
+      _userEmail = prefs.getString('userEmail');
+      _userPhoto = prefs.getString('userProfilePic');
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +37,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(kToolbarHeight),
         child: Container(
-          decoration: BoxDecoration(boxShadow: [
+          decoration: const BoxDecoration(boxShadow: [
             BoxShadow(
               blurRadius: 15.0,
               spreadRadius: 0,
@@ -43,13 +62,17 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   icon: const Icon(
                     Icons.settings,
                   ),
-                  onPressed: () {
-                    Navigator.push(
+                  onPressed: () async {
+                    final updated = await Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => SettingScreen(),
                       ),
                     );
+
+                    if (updated == true) {
+                      await _loadUser();
+                    }
                   },
                 ),
               )
@@ -57,12 +80,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           ),
         ),
       ),
-      // backgroundColor: const Color(0xFFF9F9F9),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 20.0,
               ),
               // User Info Card
@@ -81,30 +103,29 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     ),
                   ],
                 ),
-                child: const Row(
+                child: Row(
                   children: [
                     CircleAvatar(
                       radius: 38,
-                      backgroundImage:
-                          AssetImage('assets/images/home/Avatar.png'),
+                      backgroundImage: NetworkImage(_userPhoto ?? ''),
                     ),
                     const SizedBox(width: 25),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'John Kevin',
-                          style: TextStyle(
+                          _userName ?? '',
+                          style: const TextStyle(
                             fontFamily: 'Gilroy',
                             fontSize: 20.0,
                             color: Color.fromRGBO(0, 0, 0, 1),
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                        SizedBox(height: 4),
+                        const SizedBox(height: 4),
                         Text(
-                          'johnkevin@gmail.com',
-                          style: TextStyle(
+                          _userEmail ?? '',
+                          style: const TextStyle(
                             fontFamily: 'Gilroy',
                             fontSize: 14.0,
                             color: Color.fromRGBO(24, 27, 25, 1),
