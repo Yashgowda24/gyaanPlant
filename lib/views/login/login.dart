@@ -24,21 +24,29 @@ class _LoginScreenState extends State<LoginScreen> {
     final phoneNumber = _phoneController.text.trim();
 
     if (phoneNumber.isNotEmpty) {
-      await AppUrl.sendOtp(phoneNumber);
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('OTP sent successfully!'),
-        ),
-      );
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => OTPScreen(
-            phoneNumber: phoneNumber,
+      bool isVerified = await AppUrl.sendOtp(phoneNumber);
+      if (isVerified) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('OTP sent successfully!'),
           ),
-        ),
-      );
+        );
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => OTPScreen(
+              phoneNumber: phoneNumber,
+            ),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Enter valid number!'),
+          ),
+        );
+      }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(

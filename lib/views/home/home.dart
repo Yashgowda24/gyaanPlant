@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:gyaanplant_learning_app/providers/course_provider.dart';
 import 'package:gyaanplant_learning_app/styles/styles.dart';
 import 'package:gyaanplant_learning_app/views/assessmet/assessmet.dart';
-import 'package:gyaanplant_learning_app/views/course_video/course_video.dart';
+import 'package:gyaanplant_learning_app/views/course_video/lesson_body.dart';
 import 'package:gyaanplant_learning_app/views/library/library.dart';
 import 'package:gyaanplant_learning_app/views/main_navigation.dart';
 import 'package:gyaanplant_learning_app/views/user_profile/profile.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -79,11 +81,33 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-class HomeContent extends StatelessWidget {
+class HomeContent extends StatefulWidget {
   const HomeContent({super.key});
 
   @override
+  State<HomeContent> createState() => _HomeContentState();
+}
+
+class _HomeContentState extends State<HomeContent> {
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<CourseProvider>(context, listen: false).fetchCourses();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final courseProvider = Provider.of<CourseProvider>(context);
+
+    if (courseProvider.isLoading) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+    final courses = courseProvider.courses;
     return SingleChildScrollView(
       padding: const EdgeInsets.only(
           top: 30.0, left: 16.0, right: 16.0, bottom: 20.0),
@@ -107,7 +131,7 @@ class HomeContent extends StatelessWidget {
                   child: IconButton(
                     icon: const Icon(Icons.notifications_none_rounded,
                         color: Colors.black),
-                    onPressed: () {},
+                    onPressed: () async {},
                   ),
                 )
               ],
@@ -119,15 +143,16 @@ class HomeContent extends StatelessWidget {
             title: 'Course 1',
             lessons: [
               LessonCard(
-                image: 'assets/images/home/img.png',
-                title: 'Lesson 1 | Course 1',
+                image: courses[0].thumbnail,
+                title: courses[0].title,
                 onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => LessonVideoScreen(
-                        lessonNumber: 1,
-                      ),
+                      builder: (context) => LessonBody(),
+                      // LessonVideoScreen(
+                      //   lessonNumber: 2,
+                      // ),
                     ),
                   );
                 },
@@ -137,14 +162,12 @@ class HomeContent extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => LessonVideoScreen(
-                        lessonNumber: 1,
-                      ),
+                      builder: (context) => LessonBody(),
                     ),
                   );
                 },
-                image: 'assets/images/home/unsplash_KW3m50XRhjk.png',
-                title: 'Lesson 2 | Course 1',
+                image: courses[1].thumbnail,
+                title: courses[1].title,
               ),
             ],
           ),
@@ -156,28 +179,24 @@ class HomeContent extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => LessonVideoScreen(
-                        lessonNumber: 1,
-                      ),
+                      builder: (context) => LessonBody(),
                     ),
                   );
                 },
-                image: 'assets/images/home/unsplash_KW3m50XRhjk_2.png',
-                title: 'Lesson 1-Education | Course 2',
+                image: courses[1].thumbnail,
+                title: courses[1].title,
               ),
               LessonCard(
                 onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => LessonVideoScreen(
-                        lessonNumber: 1,
-                      ),
+                      builder: (context) => LessonBody(),
                     ),
                   );
                 },
-                image: 'assets/images/home/unsplash_KW3m50XRhjk_2.png',
-                title: 'Lesson 2-Tutorial | Course 2',
+                image: courses[0].thumbnail,
+                title: courses[0].title,
               ),
             ],
           ),
@@ -189,28 +208,24 @@ class HomeContent extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => LessonVideoScreen(
-                        lessonNumber: 1,
-                      ),
+                      builder: (context) => LessonBody(),
                     ),
                   );
                 },
-                image: 'assets/images/home/unsplash_KW3m50XRhjk_2.png',
-                title: 'Lesson 1 | How to | Course 3',
+                image: courses[0].thumbnail,
+                title: courses[0].title,
               ),
               LessonCard(
                 onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => LessonVideoScreen(
-                        lessonNumber: 1,
-                      ),
+                      builder: (context) => LessonBody(),
                     ),
                   );
                 },
-                image: 'assets/images/home/unsplash_KW3m50XRhjk_3.png',
-                title: 'Lesson 2 | How to | Course 3',
+                image: courses[1].thumbnail,
+                title: courses[1].title,
               ),
             ],
           ),
@@ -319,7 +334,21 @@ class LessonCard extends StatelessWidget {
               child: Stack(
                 alignment: Alignment.center,
                 children: [
-                  Image.asset(image, fit: BoxFit.cover),
+                  Image.network(
+                    image,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) => const Center(
+                        child: Icon(
+                      Icons.broken_image_outlined,
+                      color: Colors.black,
+                    )),
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    },
+                  ),
                   const Icon(Icons.play_circle_fill,
                       color: Colors.white, size: 40),
                 ],

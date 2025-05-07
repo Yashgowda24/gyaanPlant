@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:gyaanplant_learning_app/providers/course_provider.dart';
 import 'package:gyaanplant_learning_app/styles/styles.dart';
 import 'package:gyaanplant_learning_app/views/assessmet/assessmet.dart';
 import 'package:gyaanplant_learning_app/views/course_video/course_completed.dart';
+import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
 class LessonVideoScreen extends StatefulWidget {
@@ -105,6 +107,7 @@ class _LessonVideoScreenState extends State<LessonVideoScreen> {
   Widget build(BuildContext context) {
     bool isFirstLesson = widget.lessonNumber == 1;
     bool isLastLesson = widget.lessonNumber == 2;
+    final courses = Provider.of<CourseProvider>(context).courses;
 
     return Scaffold(
       appBar: PreferredSize(
@@ -191,9 +194,10 @@ class _LessonVideoScreenState extends State<LessonVideoScreen> {
           const SizedBox(height: 16),
           Divider(),
           const SizedBox(height: 12),
-          const Padding(
+          Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.0),
             child: Text(
+              // courses[0].description,
               "In this Idea Course 1, We'll show the step by step process of Gyaan Plant LMS, App created by MAD to build better products, just as Google, Slack, KLM and Lorem Ipsum other do.",
               style: TextStyle(
                 fontFamily: 'Gilroy',

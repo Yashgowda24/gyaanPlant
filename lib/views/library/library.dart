@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:gyaanplant_learning_app/views/course_video/course_video.dart';
+import 'package:gyaanplant_learning_app/providers/course_provider.dart';
+import 'package:gyaanplant_learning_app/views/course_video/lesson_body.dart';
 import 'package:gyaanplant_learning_app/views/home/home.dart';
+import 'package:provider/provider.dart';
 
 class LibraryScreen extends StatefulWidget {
   const LibraryScreen({super.key});
@@ -14,6 +16,9 @@ class _LibraryScreenState extends State<LibraryScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final courseProvider = Provider.of<CourseProvider>(context);
+    final courses = courseProvider.courses;
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(kToolbarHeight),
@@ -48,8 +53,6 @@ class _LibraryScreenState extends State<LibraryScreen> {
             TextField(
               decoration: InputDecoration(
                 hintText: 'Search videos',
-                // contentPadding: const EdgeInsets.symmetric(
-                //     vertical: 15.0, horizontal: 20.0),
                 hintStyle: const TextStyle(
                   fontFamily: 'Gilroy',
                   fontSize: 16,
@@ -57,7 +60,6 @@ class _LibraryScreenState extends State<LibraryScreen> {
                   color: Color.fromRGBO(138, 140, 148, 1),
                 ),
                 filled: true,
-                // fillColor: Colors.grey,
                 suffixIcon: Padding(
                   padding: const EdgeInsets.only(right: 10.0),
                   child: Image.asset('assets/images/home/search-normal.png'),
@@ -84,36 +86,32 @@ class _LibraryScreenState extends State<LibraryScreen> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              LessonVideoScreen(lessonNumber: 1)),
+                      MaterialPageRoute(builder: (context) => LessonBody()),
                     );
                   },
-                  image: 'assets/images/home/unsplash_KW3m50XRhjk_2.png',
-                  title: 'Lesson 1 | Course 1 \nChapter 1',
+                  image: courses[0].thumbnail,
+                  title: courses[0].title,
                 ),
                 LessonCard(
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              LessonVideoScreen(lessonNumber: 1)),
+                      MaterialPageRoute(builder: (context) => LessonBody()),
                     );
                   },
-                  image: 'assets/images/home/unsplash_KW3m50XRhjk_2.png',
-                  title: 'Lesson 2 | Course 1 \nChapter 1',
+                  image: courses[1].thumbnail,
+                  title: courses[1].title,
                 ),
                 if (showMoreRecommended) ...[
                   LessonCard(
                     onPressed: () {},
-                    image: 'assets/images/home/unsplash_KW3m50XRhjk_2.png',
-                    title: 'Lesson 3 | Course 1 \nChapter 2',
+                    image: courses[1].thumbnail,
+                    title: courses[1].title,
                   ),
                   LessonCard(
                     onPressed: () {},
-                    image: 'assets/images/home/unsplash_KW3m50XRhjk_2.png',
-                    title: 'Lesson 4 | Course 2 \nChapter 1',
+                    image: courses[1].thumbnail,
+                    title: courses[1].title,
                   ),
                 ]
               ],
@@ -134,25 +132,21 @@ class _LibraryScreenState extends State<LibraryScreen> {
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                LessonVideoScreen(lessonNumber: 1)),
+                        MaterialPageRoute(builder: (context) => LessonBody()),
                       );
                     },
-                    image: 'assets/images/home/unsplash_KW3m50XRhjk_2.png',
-                    title: 'Lesson 1 | Course 1 \nChapter 1',
+                    image: courses[0].thumbnail,
+                    title: courses[0].title,
                   ),
                   LessonCard(
                     onPressed: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                LessonVideoScreen(lessonNumber: 1)),
+                        MaterialPageRoute(builder: (context) => LessonBody()),
                       );
                     },
-                    image: 'assets/images/home/unsplash_KW3m50XRhjk_2.png',
-                    title: 'Lesson 2 | Course 1 \nChapter 1',
+                    image: courses[1].thumbnail,
+                    title: courses[1].title,
                   ),
                 ],
               ),
