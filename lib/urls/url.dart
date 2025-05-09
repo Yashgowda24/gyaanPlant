@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:gyaanplant_learning_app/model/get_category.dart';
 import 'package:gyaanplant_learning_app/model/get_course.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -150,6 +151,25 @@ class AppUrl {
       print('Profile updated');
     } else {
       print('Prof update failed: ${response.body}');
+    }
+  }
+
+  static Future<List<GetAssessmentCategory>> getAssessmentCategory() async {
+    final uri = Uri.parse('$baseUrl/category/get-category');
+
+    final response = await http.get(uri);
+    print(response.body);
+    if (response.statusCode == 200) {
+      final jsondata = jsonDecode(response.body);
+      List jsonDataList = jsondata['data'];
+      print(
+          jsonDataList.map((e) => GetAssessmentCategory.fromJson(e)).toList());
+      return jsonDataList
+          .map((e) => GetAssessmentCategory.fromJson(e))
+          .toList();
+    } else {
+      print('api call failed!');
+      throw Exception('Api fail');
     }
   }
 }

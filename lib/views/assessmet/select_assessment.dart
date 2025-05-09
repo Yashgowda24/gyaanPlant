@@ -1,8 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:gyaanplant_learning_app/model/get_category.dart';
+import 'package:gyaanplant_learning_app/urls/url.dart';
 import 'package:gyaanplant_learning_app/views/assessmet/web_dev/web_dev_assessment1.dart';
 
-class SelectAssessmentCategory extends StatelessWidget {
+class SelectAssessmentCategory extends StatefulWidget {
   const SelectAssessmentCategory({super.key});
+
+  @override
+  State<SelectAssessmentCategory> createState() =>
+      _SelectAssessmentCategoryState();
+}
+
+class _SelectAssessmentCategoryState extends State<SelectAssessmentCategory> {
+  List<GetAssessmentCategory> categories = [];
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchCategories();
+  }
+
+  void fetchCategories() async {
+    try {
+      categories = await AppUrl.getAssessmentCategory();
+    } catch (e) {
+      print('error');
+    }
+
+    setState(() {
+      _isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -10,7 +39,7 @@ class SelectAssessmentCategory extends StatelessWidget {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(kToolbarHeight),
         child: Container(
-          decoration: BoxDecoration(boxShadow: [
+          decoration: const BoxDecoration(boxShadow: [
             BoxShadow(
               blurRadius: 15.0,
               spreadRadius: 0,
@@ -31,88 +60,91 @@ class SelectAssessmentCategory extends StatelessWidget {
           ),
         ),
       ),
-      body: Column(
-        children: [
-          SizedBox(
-            height: 35,
-          ),
-          Center(
-            child: Text(
-              'Select Assessment Category',
-              style: TextStyle(
-                fontFamily: 'Gilroy',
-                fontSize: 20.0,
-                color: Color.fromRGBO(0, 0, 0, 1),
-                fontWeight: FontWeight.w700,
-              ),
+      body: _isLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : Column(
+              children: [
+                const SizedBox(
+                  height: 35,
+                ),
+                const Center(
+                  child: Text(
+                    'Select Assessment Category',
+                    style: TextStyle(
+                      fontFamily: 'Gilroy',
+                      fontSize: 20.0,
+                      color: Color.fromRGBO(0, 0, 0, 1),
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 85,
+                ),
+                Column(
+                  children: [
+                    SelectCourse(
+                      image1: categories[0].imageUrl,
+                      text1: categories[0].title,
+                      image2: categories[1].imageUrl,
+                      text2: categories[1].title,
+                      onPressed1: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => WebDevAssessmentPg1(),
+                          ),
+                        );
+                      },
+                      onPressed2: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => WebDevAssessmentPg1(),
+                          ),
+                        );
+                      },
+                    ),
+                    const SizedBox(
+                      height: 16,
+                    ),
+                    SelectCourse(
+                      image1: categories[2].imageUrl,
+                      text1: categories[2].title,
+                      image2: categories[0].imageUrl,
+                      text2: categories[3].title,
+                      onPressed1: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => WebDevAssessmentPg1(),
+                          ),
+                        );
+                      },
+                      onPressed2: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => WebDevAssessmentPg1(),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                )
+              ],
             ),
-          ),
-          SizedBox(
-            height: 85,
-          ),
-          Column(
-            children: [
-              SelectCourse(
-                image1:
-                    Image.asset('assets/images/assessment/Rectangle959.png'),
-                text1: 'Course 1',
-                image2: Image.asset('assets/images/assessment/image.png'),
-                text2: 'Course 2',
-                onPressed1: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => WebDevAssessmentPg1(),
-                    ),
-                  );
-                },
-                onPressed2: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => WebDevAssessmentPg1(),
-                    ),
-                  );
-                },
-              ),
-              SizedBox(
-                height: 16,
-              ),
-              SelectCourse(
-                image1: Image.asset('assets/images/assessment/image1.png'),
-                text1: 'Designing',
-                image2: Image.asset('assets/images/assessment/image2.png'),
-                text2: 'Coding',
-                onPressed1: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => WebDevAssessmentPg1(),
-                    ),
-                  );
-                },
-                onPressed2: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => WebDevAssessmentPg1(),
-                    ),
-                  );
-                },
-              ),
-            ],
-          )
-        ],
-      ),
     );
   }
 }
 
 class SelectCourse extends StatelessWidget {
-  final Image image1;
-  final String text1;
-  final Image image2;
-  final String text2;
+  final String? image1;
+  final String? text1;
+  final String? image2;
+  final String? text2;
   final VoidCallback onPressed1;
   final VoidCallback onPressed2;
 
@@ -134,13 +166,13 @@ class SelectCourse extends StatelessWidget {
           onTap: onPressed1,
           child: Column(
             children: [
-              image1,
-              SizedBox(
+              Image.network(image1 ?? ''),
+              const SizedBox(
                 height: 10,
               ),
               Text(
-                text1,
-                style: TextStyle(
+                text1 ?? '',
+                style: const TextStyle(
                   fontFamily: 'Gilroy',
                   fontSize: 16.0,
                   color: Color.fromRGBO(0, 0, 0, 1),
@@ -150,17 +182,20 @@ class SelectCourse extends StatelessWidget {
             ],
           ),
         ),
+        const SizedBox(
+          height: 150,
+        ),
         GestureDetector(
           onTap: onPressed2,
           child: Column(
             children: [
-              image2,
-              SizedBox(
+              Image.network(image2 ?? ''),
+              const SizedBox(
                 height: 10,
               ),
               Text(
-                text2,
-                style: TextStyle(
+                text2 ?? '',
+                style: const TextStyle(
                   fontFamily: 'Gilroy',
                   fontSize: 16.0,
                   color: Color.fromRGBO(0, 0, 0, 1),

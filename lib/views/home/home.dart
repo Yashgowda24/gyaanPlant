@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gyaanplant_learning_app/providers/course_provider.dart';
 import 'package:gyaanplant_learning_app/styles/styles.dart';
+import 'package:gyaanplant_learning_app/urls/url.dart';
 import 'package:gyaanplant_learning_app/views/assessmet/assessmet.dart';
 import 'package:gyaanplant_learning_app/views/course_video/lesson_body.dart';
 import 'package:gyaanplant_learning_app/views/library/library.dart';
@@ -131,7 +132,9 @@ class _HomeContentState extends State<HomeContent> {
                   child: IconButton(
                     icon: const Icon(Icons.notifications_none_rounded,
                         color: Colors.black),
-                    onPressed: () async {},
+                    onPressed: () async {
+                      await AppUrl.getAssessmentCategory();
+                    },
                   ),
                 )
               ],
