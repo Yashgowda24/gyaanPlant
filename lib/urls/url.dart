@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:gyaanplant_learning_app/model/get_category.dart';
 import 'package:gyaanplant_learning_app/model/get_course.dart';
+import 'package:gyaanplant_learning_app/model/mcqs.dart';
 import 'package:gyaanplant_learning_app/shared_preferences/user_shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -15,113 +16,129 @@ class AppUrl {
   // add userId at last for updateProfileUrl
   static const String updateProfileUrl = 'user/update-profile';
   static const String getCategoryUrl = 'category/get-category';
+  static const String getAssessmentQuestionUrl = 'assessment/get-questions';
 
   //  api call to send otp
   static Future<bool> sendOtp(String phoneNumber) async {
-    final response = await http.post(
-      Uri.parse('$baseUrl/$sendOtpUrl'),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode({'phoneNumber': phoneNumber}),
-    );
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/$sendOtpUrl'),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({'phoneNumber': phoneNumber}),
+      );
 
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      final responseData = jsonDecode(response.body);
-      final success = responseData['success'] = true;
-      print('Otp sent');
-      print('Response code: ${response.statusCode}');
-      print('Otp response body:${response.body}');
-      return success;
-    } else {
-      print('Failed: ${response.body}');
-      return false;
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final responseData = jsonDecode(response.body);
+        final success = responseData['success'] == true;
+        print('Otp sent');
+        print('Otp response body:${response.body}');
+        return success;
+      } else {
+        print('Failed: ${response.body}');
+        return false;
+      }
+    } catch (e) {
+      throw Exception('Error sending OTP: $e');
     }
   }
 
   // api call to verify otp
   static Future<bool> verifyOtp(String phoneNumber, String otp) async {
-    final response = await http.post(
-      Uri.parse('$baseUrl/$verifyOtpUrl'),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode({
-        'phoneNumber': phoneNumber,
-        'otp': otp,
-      }),
-    );
-
-    if (response.statusCode == 200 || response.statusCode == 201) {
-      final responseData = jsonDecode(response.body);
-      final success = responseData['success'] == true;
-      final userId = responseData['data']['_id'];
-      final userName = responseData['data']['name'];
-      final profilePic = responseData['data']['profile_pic'];
-      final userEmail = responseData['data']['email'];
-
-      await UserPreferences.saveUserDetails(
-        userId: userId,
-        userName: userName,
-        userEmail: userEmail,
-        userProfilePic: profilePic,
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/$verifyOtpUrl'),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'phoneNumber': phoneNumber,
+          'otp': otp,
+        }),
       );
 
-      print('User ID from api call: $userId');
-      print('User name from api call: $userName');
-      print('Otp verified');
-      print('Response code: ${response.statusCode}');
-      print('Otp response body:${response.body}');
-      return success;
-    } else {
-      print('Failed: ${response.body}');
-      return false;
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final responseData = jsonDecode(response.body);
+        final success = responseData['success'] == true;
+        final userId = responseData['data']['_id'];
+        final userName = responseData['data']['name'];
+        final profilePic = responseData['data']['profile_pic'];
+        final userEmail = responseData['data']['email'];
+
+        await UserPreferences.saveUserDetails(
+          userId: userId,
+          userName: userName,
+          userEmail: userEmail,
+          userProfilePic: profilePic,
+        );
+
+        print('User ID from api call: $userId');
+        print('User name from api call: $userName');
+        print('Otp verified');
+        print('Response code: ${response.statusCode}');
+        print('Otp response body:${response.body}');
+        return success;
+      } else {
+        print('Failed: ${response.body}');
+        return false;
+      }
+    } catch (e) {
+      throw Exception('Error verifying OTP: $e');
     }
   }
 
   // gets course for home screen
   static Future<List<GetCourse>> getCourse() async {
-    final response = await http.get(Uri.parse('$baseUrl/$getCourseUrl'));
-    if (response.statusCode == 200) {
+    try {
+      final response = await http.get(Uri.parse('$baseUrl/$getCourseUrl'));
       print(response.body);
-      final jsonData = jsonDecode(response.body);
-      final List courseJson = jsonData['data'];
-      print(courseJson
-          .map((courseJson) => GetCourse.fromJson(courseJson))
-          .toList()
-          .cast<GetCourse>());
-      return courseJson
-          .map((courseJson) => GetCourse.fromJson(courseJson))
-          .toList()
-          .cast<GetCourse>();
-    } else {
-      print('Get course api failed: ${response.statusCode}');
-      throw Exception('Failed to load courses');
+      if (response.statusCode == 200) {
+        final jsonData = jsonDecode(response.body);
+        final List courseJson = jsonData['data'];
+        print(courseJson
+            .map((courseJson) => GetCourse.fromJson(courseJson))
+            .toList()
+            .cast<GetCourse>());
+        return courseJson
+            .map((courseJson) => GetCourse.fromJson(courseJson))
+            .toList()
+            .cast<GetCourse>();
+      } else {
+        print('Get course api failed: ${response.statusCode}');
+        throw Exception('Failed to load courses');
+      }
+    } catch (e) {
+      throw Exception('Error getting course: $e');
     }
   }
 
   // Users My Profile page, image update api call
   static Future<String> uploadImage(File imageFile) async {
-    final uri = Uri.parse('$baseUrl/$fileUploadUrl');
+    try {
+      final uri = Uri.parse('$baseUrl/$fileUploadUrl');
 
-    var request = http.MultipartRequest('POST', uri);
-    request.files
-        .add(await http.MultipartFile.fromPath('image', imageFile.path));
+      var request = http.MultipartRequest('POST', uri);
+      request.files
+          .add(await http.MultipartFile.fromPath('image', imageFile.path));
 
-    final response = await request.send();
-    print('File upload response: $response');
+      final response = await request.send();
+      print('File upload response: $response');
 
-    if (response.statusCode == 200) {
-      print('fileUpload stat code is 200');
-      final respStr = await response.stream.bytesToString();
-      final jsonResp = json.decode(respStr);
-      print('file path is:');
-      print(jsonResp['file']['filePath']);
-      return jsonResp['file']['filePath'];
-    } else {
-      print('file upload failed!');
-      print('${response.statusCode}');
-      return '';
+      if (response.statusCode == 200) {
+        print('fileUpload stat code is 200');
+        final respStr = await response.stream.bytesToString();
+        final jsonResp = json.decode(respStr);
+        print('file path is:');
+        print(jsonResp['file']['filePath']);
+        return jsonResp['file']['filePath'];
+      } else {
+        print('file upload failed!');
+        print('${response.statusCode}');
+        return '';
+      }
+    } catch (e) {
+      throw Exception('Upload failed: $e');
     }
   }
 
@@ -156,21 +173,42 @@ class AppUrl {
   }
 
   static Future<List<GetAssessmentCategory>> getAssessmentCategory() async {
-    final uri = Uri.parse('$baseUrl/$getCategoryUrl');
+    try {
+      final uri = Uri.parse('$baseUrl/$getCategoryUrl');
 
-    final response = await http.get(uri);
+      final response = await http.get(uri);
+      print(response.body);
+      if (response.statusCode == 200) {
+        final jsondata = jsonDecode(response.body);
+        List jsonDataList = jsondata['data'];
+        print(jsonDataList
+            .map((e) => GetAssessmentCategory.fromJson(e))
+            .toList());
+        return jsonDataList
+            .map((e) => GetAssessmentCategory.fromJson(e))
+            .toList();
+      } else {
+        print('api call failed!');
+        throw Exception('Api fail');
+      }
+    } catch (e) {
+      throw Exception('Fetching catergory failed: $e');
+    }
+  }
+
+  static Future<Mcq> getAssessmentMCQ() async {
+    final response =
+        await http.get(Uri.parse('$baseUrl/$getAssessmentQuestionUrl'));
     print(response.body);
+    print(response.statusCode);
+
     if (response.statusCode == 200) {
-      final jsondata = jsonDecode(response.body);
-      List jsonDataList = jsondata['data'];
-      print(
-          jsonDataList.map((e) => GetAssessmentCategory.fromJson(e)).toList());
-      return jsonDataList
-          .map((e) => GetAssessmentCategory.fromJson(e))
-          .toList();
+      final jsonData = jsonDecode(response.body);
+      print(Mcq.fromJson(jsonData));
+      return Mcq.fromJson(jsonData);
     } else {
-      print('api call failed!');
-      throw Exception('Api fail');
+      print('Error');
+      throw Exception('api call failed');
     }
   }
 }

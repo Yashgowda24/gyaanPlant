@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gyaanplant_learning_app/model/get_category.dart';
 import 'package:gyaanplant_learning_app/urls/url.dart';
-import 'package:gyaanplant_learning_app/views/assessmet/web_dev/web_dev_assessment1.dart';
+import 'package:gyaanplant_learning_app/views/assessmet/mcq/mcq_screen.dart';
 
 class SelectAssessmentCategory extends StatefulWidget {
   const SelectAssessmentCategory({super.key});
@@ -94,7 +94,7 @@ class _SelectAssessmentCategoryState extends State<SelectAssessmentCategory> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => WebDevAssessmentPg1(),
+                            builder: (context) => MCQAssessment(),
                           ),
                         );
                       },
@@ -102,7 +102,7 @@ class _SelectAssessmentCategoryState extends State<SelectAssessmentCategory> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => WebDevAssessmentPg1(),
+                            builder: (context) => MCQAssessment(),
                           ),
                         );
                       },
@@ -119,7 +119,7 @@ class _SelectAssessmentCategoryState extends State<SelectAssessmentCategory> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => WebDevAssessmentPg1(),
+                            builder: (context) => MCQAssessment(),
                           ),
                         );
                       },
@@ -127,7 +127,7 @@ class _SelectAssessmentCategoryState extends State<SelectAssessmentCategory> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => WebDevAssessmentPg1(),
+                            builder: (context) => MCQAssessment(),
                           ),
                         );
                       },
