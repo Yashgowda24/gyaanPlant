@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gyaanplant_learning_app/providers/course_provider.dart';
@@ -297,6 +299,10 @@ class NetworkVideoPlayer extends StatefulWidget {
 
 class _NetworkVideoPlayerState extends State<NetworkVideoPlayer> {
   late VideoPlayerController _controller;
+  bool _showControls = true;
+  Timer? _hideTimer;
+  bool _isFullscreen = false;
+  double _playbackSpeed = 1.0;
 
   @override
   void initState() {
@@ -305,11 +311,76 @@ class _NetworkVideoPlayerState extends State<NetworkVideoPlayer> {
       ..initialize().then((_) {
         setState(() {});
         _controller.play();
+        _startHideTimer();
       });
+  }
+
+  void _startHideTimer() {
+    _hideTimer?.cancel();
+    _hideTimer = Timer(const Duration(seconds: 3), () {
+      if (_controller.value.isPlaying) {
+        setState(() => _showControls = false);
+      }
+    });
+  }
+
+  void _togglePlayPause() {
+    setState(() {
+      if (_controller.value.isPlaying) {
+        _controller.pause();
+        _showControls = true;
+      } else {
+        _controller.play();
+        _startHideTimer();
+      }
+    });
+  }
+
+  void _onTapVideo() {
+    setState(() => _showControls = !_showControls);
+    if (_controller.value.isPlaying && _showControls) {
+      _startHideTimer();
+    }
+  }
+
+  void _seekRelative(Duration offset) {
+    final newPosition = _controller.value.position + offset;
+    _controller.seekTo(newPosition);
+  }
+
+  void _changePlaybackSpeed() {
+    final speeds = [0.5, 1.0, 1.25, 1.5, 2.0];
+    final currentIndex = speeds.indexOf(_playbackSpeed);
+    final nextSpeed = speeds[(currentIndex + 1) % speeds.length];
+    setState(() {
+      _playbackSpeed = nextSpeed;
+      _controller.setPlaybackSpeed(nextSpeed);
+    });
+  }
+
+  void _toggleFullscreen() {
+    setState(() => _isFullscreen = !_isFullscreen);
+    if (_isFullscreen) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => Scaffold(
+            backgroundColor: Colors.black,
+            body: SafeArea(
+              child: Center(
+                child: NetworkVideoPlayer(videoUrl: widget.videoUrl),
+              ),
+            ),
+          ),
+        ),
+      );
+    } else {
+      Navigator.of(context).pop();
+    }
   }
 
   @override
   void dispose() {
+    _hideTimer?.cancel();
     _controller.dispose();
     super.dispose();
   }
@@ -319,31 +390,101 @@ class _NetworkVideoPlayerState extends State<NetworkVideoPlayer> {
     return _controller.value.isInitialized
         ? AspectRatio(
             aspectRatio: _controller.value.aspectRatio,
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                VideoPlayer(_controller),
-                if (!_controller.value.isPlaying)
-                  IconButton(
-                    icon: const Icon(Icons.play_circle,
-                        size: 64, color: Colors.white),
-                    onPressed: () => _controller.play(),
-                  ),
-                Positioned(
-                  bottom: 10,
-                  left: 16,
-                  right: 16,
-                  child: VideoProgressIndicator(
-                    _controller,
-                    allowScrubbing: true,
-                    colors: VideoProgressColors(
-                      playedColor: Colors.red,
-                      bufferedColor: Colors.white54,
-                      backgroundColor: Colors.white30,
+            child: GestureDetector(
+              onTap: _onTapVideo,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  VideoPlayer(_controller),
+
+                  // Center Controls
+                  if (_showControls) ...[
+                    Positioned(
+                      left: 30,
+                      child: IconButton(
+                        icon: const Icon(Icons.replay_10,
+                            size: 40, color: Colors.white),
+                        onPressed: () =>
+                            _seekRelative(const Duration(seconds: -10)),
+                      ),
                     ),
-                  ),
-                ),
-              ],
+                    IconButton(
+                      icon: Icon(
+                        _controller.value.isPlaying
+                            ? Icons.pause_circle
+                            : Icons.play_circle,
+                        size: 64,
+                        color: Colors.white,
+                      ),
+                      onPressed: _togglePlayPause,
+                    ),
+                    Positioned(
+                      right: 30,
+                      child: IconButton(
+                        icon: const Icon(Icons.forward_10,
+                            size: 40, color: Colors.white),
+                        onPressed: () =>
+                            _seekRelative(const Duration(seconds: 10)),
+                      ),
+                    ),
+                  ],
+
+                  // Bottom Controls
+                  if (_showControls)
+                    Positioned(
+                      bottom: 10,
+                      left: 10,
+                      right: 10,
+                      child: Column(
+                        children: [
+                          VideoProgressIndicator(
+                            _controller,
+                            allowScrubbing: true,
+                            colors: const VideoProgressColors(
+                              playedColor: Colors.red,
+                              bufferedColor: Colors.white54,
+                              backgroundColor: Colors.white30,
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                _formatDuration(_controller.value.position),
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                              Row(
+                                children: [
+                                  // Playback Speed Button
+                                  TextButton(
+                                    onPressed: _changePlaybackSpeed,
+                                    child: Text(
+                                      "${_playbackSpeed}x",
+                                      style: const TextStyle(
+                                          color: Colors.white, fontSize: 14),
+                                    ),
+                                  ),
+                                  // Fullscreen Button
+                                  IconButton(
+                                    icon: const Icon(
+                                      Icons.fullscreen,
+                                      color: Colors.white,
+                                    ),
+                                    onPressed: _toggleFullscreen,
+                                  ),
+                                ],
+                              ),
+                              Text(
+                                _formatDuration(_controller.value.duration),
+                                style: const TextStyle(color: Colors.white),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                ],
+              ),
             ),
           )
         : const SizedBox(
@@ -351,4 +492,49 @@ class _NetworkVideoPlayerState extends State<NetworkVideoPlayer> {
             child: Center(child: CircularProgressIndicator()),
           );
   }
+
+  String _formatDuration(Duration position) {
+    final minutes = position.inMinutes.remainder(60).toString().padLeft(2, '0');
+    final seconds = position.inSeconds.remainder(60).toString().padLeft(2, '0');
+    return "$minutes:$seconds";
+  }
 }
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   return _controller.value.isInitialized
+  //       ? AspectRatio(
+  //           aspectRatio: _controller.value.aspectRatio,
+  //           child: Stack(
+  //             alignment: Alignment.center,
+  //             children: [
+  //               VideoPlayer(_controller),
+  //               if (!_controller.value.isPlaying)
+  //                 IconButton(
+  //                   icon: const Icon(Icons.play_circle,
+  //                       size: 64, color: Colors.white),
+  //                   onPressed: () => _controller.play(),
+  //                 ),
+  //               Positioned(
+  //                 bottom: 10,
+  //                 left: 16,
+  //                 right: 16,
+  //                 child: VideoProgressIndicator(
+  //                   _controller,
+  //                   allowScrubbing: true,
+  //                   colors: VideoProgressColors(
+  //                     playedColor: Colors.red,
+  //                     bufferedColor: Colors.white54,
+  //                     backgroundColor: Colors.white30,
+  //                   ),
+  //                 ),
+  //               ),
+  //             ],
+  //           ),
+  //         )
+  //       : const SizedBox(
+  //           height: 200,
+  //           child: Center(child: CircularProgressIndicator()),
+  //         );
+  // }
+// }
