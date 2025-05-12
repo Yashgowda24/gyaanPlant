@@ -36,12 +36,6 @@ class FillProfileScreen extends StatelessWidget {
                 GreenButton(
                   text: 'Continue',
                   onPressed: () {
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => HomeScreen(),
-                    //   ),
-                    // );
                     Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(builder: (_) => const MainNavigation()),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:gyaanplant_learning_app/shared_preferences/user_shared_preferences.dart';
 import 'package:gyaanplant_learning_app/views/settings/setting_screen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({super.key});
@@ -23,11 +23,16 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
   }
 
   Future<void> _loadUser() async {
-    final prefs = await SharedPreferences.getInstance();
+    final name = await UserPreferences.getUserName();
+    final email = await UserPreferences.getUserEmail();
+    final userPhoto = await UserPreferences.getUserProfilePhoto();
+    print(name);
+    print(email);
+    print(userPhoto);
     setState(() {
-      _userName = prefs.getString('userName');
-      _userEmail = prefs.getString('userEmail');
-      _userPhoto = prefs.getString('userProfilePic');
+      _userName = name;
+      _userEmail = email;
+      _userPhoto = userPhoto;
     });
   }
 
@@ -62,17 +67,13 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   icon: const Icon(
                     Icons.settings,
                   ),
-                  onPressed: () async {
-                    final updated = await Navigator.push(
+                  onPressed: () {
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => SettingScreen(),
                       ),
                     );
-
-                    if (updated == true) {
-                      await _loadUser();
-                    }
                   },
                 ),
               )
@@ -107,7 +108,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   children: [
                     CircleAvatar(
                       radius: 38,
-                      backgroundImage: NetworkImage(_userPhoto ?? ''),
+                      backgroundImage: _userPhoto != null &&
+                              _userPhoto!.isNotEmpty
+                          ? NetworkImage(_userPhoto!)
+                          : const AssetImage('assets/images/leaderboard/8.png')
+                              as ImageProvider,
                     ),
                     const SizedBox(width: 25),
                     Column(

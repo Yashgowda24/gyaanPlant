@@ -3,10 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gyaanplant_learning_app/components/login/green_button.dart';
+import 'package:gyaanplant_learning_app/shared_preferences/user_shared_preferences.dart';
 import 'package:gyaanplant_learning_app/urls/url.dart';
 import 'package:gyaanplant_learning_app/views/fill_profile_screen/fill_profile.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class UserProfileSettingScreen extends StatefulWidget {
   const UserProfileSettingScreen({super.key});
@@ -31,9 +31,10 @@ class _UserProfileSettingScreenState extends State<UserProfileSettingScreen> {
   }
 
   Future<void> getUserPhoto() async {
-    final prefs = await SharedPreferences.getInstance();
+    final userPhoto = await UserPreferences.getUserProfilePhoto();
+    print(userPhoto);
     setState(() {
-      _userProfilePhoto = prefs.getString('userProfilePic');
+      _userProfilePhoto = userPhoto;
     });
   }
 
@@ -165,7 +166,7 @@ class _UserProfileSettingScreenState extends State<UserProfileSettingScreen> {
                       );
                       print('over');
                       if (!mounted) return;
-                      Navigator.pop(context, true);
+                      Navigator.pop(context);
                     },
                   )
                 ],

@@ -52,7 +52,7 @@ class SettingScreen extends StatelessWidget {
                   icon: CupertinoIcons.person_circle,
                   text: 'My profile',
                   onPressed: () async {
-                    final result = await Navigator.push(
+                    Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => UserProfileSettingScreen(),

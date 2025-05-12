@@ -3,15 +3,23 @@ import 'dart:io';
 
 import 'package:gyaanplant_learning_app/model/get_category.dart';
 import 'package:gyaanplant_learning_app/model/get_course.dart';
+import 'package:gyaanplant_learning_app/shared_preferences/user_shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AppUrl {
   static String baseUrl = "https://gyannplant-backend.onrender.com/api";
+  static const String sendOtpUrl = 'auth/send-otp';
+  static const String verifyOtpUrl = 'auth/verify-otp';
+  static const String getCourseUrl = 'course/get-course';
+  static const String fileUploadUrl = 'file/upload';
+  // add userId at last for updateProfileUrl
+  static const String updateProfileUrl = 'user/update-profile';
+  static const String getCategoryUrl = 'category/get-category';
 
+  //  api call to send otp
   static Future<bool> sendOtp(String phoneNumber) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/auth/send-otp'),
+      Uri.parse('$baseUrl/$sendOtpUrl'),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -31,9 +39,10 @@ class AppUrl {
     }
   }
 
+  // api call to verify otp
   static Future<bool> verifyOtp(String phoneNumber, String otp) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/auth/verify-otp'),
+      Uri.parse('$baseUrl/$verifyOtpUrl'),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -51,12 +60,12 @@ class AppUrl {
       final profilePic = responseData['data']['profile_pic'];
       final userEmail = responseData['data']['email'];
 
-      // Shared Preferences:
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setString('userId', userId);
-      await prefs.setString('userName', userName);
-      await prefs.setString('userEmail', userEmail);
-      await prefs.setString('userProfilePic', profilePic);
+      await UserPreferences.saveUserDetails(
+        userId: userId,
+        userName: userName,
+        userEmail: userEmail,
+        userProfilePic: profilePic,
+      );
 
       print('User ID from api call: $userId');
       print('User name from api call: $userName');
@@ -70,8 +79,9 @@ class AppUrl {
     }
   }
 
+  // gets course for home screen
   static Future<List<GetCourse>> getCourse() async {
-    final response = await http.get(Uri.parse('$baseUrl/course/get-course'));
+    final response = await http.get(Uri.parse('$baseUrl/$getCourseUrl'));
     if (response.statusCode == 200) {
       print(response.body);
       final jsonData = jsonDecode(response.body);
@@ -92,7 +102,7 @@ class AppUrl {
 
   // Users My Profile page, image update api call
   static Future<String> uploadImage(File imageFile) async {
-    final uri = Uri.parse('$baseUrl/file/upload');
+    final uri = Uri.parse('$baseUrl/$fileUploadUrl');
 
     var request = http.MultipartRequest('POST', uri);
     request.files
@@ -115,27 +125,18 @@ class AppUrl {
     }
   }
 
-  // Update user profile
-//   2. profileUpdate - baseurl + user/update-profile/${userId} method: PUT, Body :
-// {
-//     "name":"John Kevin",
-//     "email":"johnkevin@gmail.com",
-//     "phone_number":"9937363686",
-//     "profile_pic":"https://example.png"
-// } sample body data
-
+  // Update users profile api with name, email, profile pic
   static Future<void> updateUserProfile({
     required String name,
     required String email,
     required String phone,
     required String profilePic,
   }) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? userId = prefs.getString('userId');
+    String? userId = await UserPreferences.getUserId();
     print('UserID for api is: $userId');
     if (userId == null) return;
 
-    final uri = Uri.parse('$baseUrl/user/update-profile/$userId');
+    final uri = Uri.parse('$baseUrl/$updateProfileUrl/$userId');
     final response = await http.put(uri,
         headers: {'content-Type': 'application/json'},
         body: jsonEncode({
@@ -155,7 +156,7 @@ class AppUrl {
   }
 
   static Future<List<GetAssessmentCategory>> getAssessmentCategory() async {
-    final uri = Uri.parse('$baseUrl/category/get-category');
+    final uri = Uri.parse('$baseUrl/$getCategoryUrl');
 
     final response = await http.get(uri);
     print(response.body);
