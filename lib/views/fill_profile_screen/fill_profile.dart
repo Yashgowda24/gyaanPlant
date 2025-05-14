@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gyaanplant_learning_app/components/learning_goals/text_subText_widget.dart';
 import 'package:gyaanplant_learning_app/components/login/green_button.dart';
+import 'package:gyaanplant_learning_app/urls/url.dart';
 import 'package:gyaanplant_learning_app/views/main_navigation.dart';
 
 class FillProfileScreen extends StatelessWidget {
@@ -8,6 +9,10 @@ class FillProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _nameController = TextEditingController();
+    final _emailController = TextEditingController();
+    final _phoneController = TextEditingController();
+
     return Scaffold(
         appBar: AppBar(),
         body: SingleChildScrollView(
@@ -24,22 +29,40 @@ class FillProfileScreen extends StatelessWidget {
                 TextWidget(
                   hintText: 'Enter Full Name',
                   keyboardType: TextInputType.name,
+                  controller: _nameController,
                 ),
                 TextWidget(
                   hintText: 'Phone',
                   keyboardType: TextInputType.phone,
+                  controller: _phoneController,
                 ),
                 TextWidget(
                   hintText: 'Email',
                   keyboardType: TextInputType.emailAddress,
+                  controller: _emailController,
                 ),
                 GreenButton(
                   text: 'Continue',
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(builder: (_) => const MainNavigation()),
+                  onPressed: () async {
+                    final name = _nameController.text;
+                    final email = _emailController.text;
+                    final phone = _phoneController.text;
+                    final bool success = await AppUrl.updateUserProfile(
+                      name: name,
+                      email: email,
+                      phone: phone,
                     );
+                    print('api passed in fill profile screen');
+                    print(success);
+                    if (success) {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => const MainNavigation()),
+                      );
+                    } else {
+                      print('Profile failed!');
+                    }
                   },
                 )
               ],
@@ -52,7 +75,7 @@ class FillProfileScreen extends StatelessWidget {
 class TextWidget extends StatelessWidget {
   final String hintText;
   final TextInputType keyboardType;
-  TextEditingController? controller;
+  final TextEditingController? controller;
 
   TextWidget({
     required this.hintText,

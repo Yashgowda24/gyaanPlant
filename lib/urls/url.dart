@@ -143,32 +143,75 @@ class AppUrl {
   }
 
   // Update users profile api with name, email, profile pic
-  static Future<void> updateUserProfile({
+  // static Future<void> updateUserProfile({
+  //   required String name,
+  //   required String email,
+  //   required String phone,
+  //   required String profilePic,
+  // }) async {
+  //   String? userId = await UserPreferences.getUserId();
+  //   print('UserID for api is: $userId');
+  //   if (userId == null) return;
+
+  //   final uri = Uri.parse('$baseUrl/$updateProfileUrl/$userId');
+  //   final response = await http.put(uri,
+  //       headers: {'content-Type': 'application/json'},
+  //       body: jsonEncode({
+  //         "name": name,
+  //         "email": email,
+  //         "phone_number": phone,
+  //         "profile_pic": profilePic,
+  //       }));
+
+  //   print('api response is: $response');
+
+  //   if (response.statusCode == 200) {
+  //     print('Profile updated');
+  //   } else {
+  //     print('Prof update failed: ${response.body}');
+  //   }
+  // }
+
+  static Future<bool> updateUserProfile({
     required String name,
     required String email,
     required String phone,
-    required String profilePic,
+    String? profilePic, // <-- Made optional
   }) async {
     String? userId = await UserPreferences.getUserId();
     print('UserID for api is: $userId');
-    if (userId == null) return;
+    if (userId == null) return false;
 
     final uri = Uri.parse('$baseUrl/$updateProfileUrl/$userId');
-    final response = await http.put(uri,
-        headers: {'content-Type': 'application/json'},
-        body: jsonEncode({
-          "name": name,
-          "email": email,
-          "phone_number": phone,
-          "profile_pic": profilePic,
-        }));
+
+    // Construct request body dynamically
+    final Map<String, dynamic> body = {
+      "name": name,
+      "email": email,
+      "phone_number": phone,
+    };
+
+    if (profilePic != null && profilePic.isNotEmpty) {
+      body["profile_pic"] = profilePic;
+    }
+
+    final response = await http.put(
+      uri,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(body),
+    );
+    final jsonResponse = jsonDecode(response.body);
+    final success = jsonResponse['success'] == true;
+    print(success);
 
     print('api response is: $response');
 
     if (response.statusCode == 200) {
       print('Profile updated');
+      return success;
     } else {
       print('Prof update failed: ${response.body}');
+      return false;
     }
   }
 
