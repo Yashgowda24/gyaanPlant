@@ -64,12 +64,14 @@ class Question {
   List<String> options;
   String correctAnswer;
   int marks;
+  // String questionID;
 
   Question({
     required this.question,
     required this.options,
     required this.correctAnswer,
     required this.marks,
+    // required this.questionID,
   });
 
   factory Question.fromJson(Map<String, dynamic> json) {
@@ -78,6 +80,7 @@ class Question {
       options: List<String>.from(json['options']),
       correctAnswer: json['correctAnswer'],
       marks: json['marks'],
+      // questionID: json['_id'],
     );
   }
 }

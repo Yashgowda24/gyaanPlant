@@ -14,6 +14,22 @@ class UserPreferences {
     await prefs.setString('userProfilePic', userProfilePic);
   }
 
+  // Login Status
+  static Future<void> setLoggedIn(bool status) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isLoggedIn', status);
+  }
+
+  static Future<bool> getIsLoggedIn() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getBool('isLoggedIn') ?? false;
+  }
+
+  static Future<void> resetLoggedIn() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+  }
+
   static Future<String?> getUserName() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString('userName');

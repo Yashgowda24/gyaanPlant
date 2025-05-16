@@ -17,6 +17,7 @@ class AppUrl {
   static const String updateProfileUrl = 'user/update-profile';
   static const String getCategoryUrl = 'category/get-category';
   static const String getAssessmentQuestionUrl = 'assessment/get-questions';
+  // static const String sendAnswers = 'assessment/submit';
 
   //  api call to send otp
   static Future<bool> sendOtp(String phoneNumber) async {
@@ -72,6 +73,8 @@ class AppUrl {
           userEmail: userEmail,
           userProfilePic: profilePic,
         );
+
+        await UserPreferences.setLoggedIn(true);
 
         print('User ID from api call: $userId');
         print('User name from api call: $userName');
@@ -254,4 +257,51 @@ class AppUrl {
       throw Exception('api call failed');
     }
   }
+
+  // static Future<void> submitAnswers({
+  //   required Map<String, String> selectedAnswers,
+  //   required BuildContext context,
+  // }) async {
+  //   final userId = await UserPreferences.getUserId();
+
+  //   final answerList = selectedAnswers.entries.map((entry) {
+  //     return {
+  //       "questionId": entry.key,
+  //       "selectedOption": entry.value,
+  //     };
+  //   }).toList();
+
+  //   final body = {
+  //     "userId": userId,
+  //     "answers": answerList,
+  //   };
+
+  //   print('Answer list is:');
+  //   print(answerList);
+  //   print('Body is:');
+  //   print(body);
+
+  //   final response = await http.post(
+  //     Uri.parse(
+  //       'https://gyannplant-backend.onrender.com/api/assessment/submit',
+  //     ),
+  //     headers: {"Content-Type": "application/json"},
+  //     body: json.encode(body),
+  //   );
+
+  //   print('Response is');
+  //   print(response);
+
+  //   if (response.statusCode == 200) {
+  //     print('Apit success body is:');
+  //     print(response.body);
+  //     // Navigator.pushReplacement(
+  //     //   context,
+  //     //   MaterialPageRoute(builder: (_) => const CongratsScreen()),
+  //     // );
+  //   } else {
+  //     // Handle error
+  //     print("Submission failed: ${response.statusCode} - ${response.body}");
+  //   }
+  // }
 }

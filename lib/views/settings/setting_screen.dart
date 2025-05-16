@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gyaanplant_learning_app/shared_preferences/user_shared_preferences.dart';
 import 'package:gyaanplant_learning_app/styles/styles.dart';
 import 'package:gyaanplant_learning_app/views/login/login.dart';
 import 'package:gyaanplant_learning_app/views/settings/certificate/my_certificate.dart';
@@ -87,13 +88,13 @@ class SettingScreen extends StatelessWidget {
                 SettingDisplayWidget(
                   icon: Icons.exit_to_app,
                   text: 'Logout',
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => LoginScreen(),
-                      ),
-                    );
+                  onPressed: () async {
+                    await UserPreferences.resetLoggedIn();
+                    print('Cleared User data successfully');
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => LoginScreen()),
+                        (route) => false);
                   },
                 ),
               ],

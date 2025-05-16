@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gyaanplant_learning_app/login_decider.dart';
 import 'package:gyaanplant_learning_app/providers/course_provider.dart';
-import 'package:gyaanplant_learning_app/views/onboarding/onboarding1.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      home: OnBoarding1(),
+      home: RootScreen(),
     );
   }
 }
