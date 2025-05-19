@@ -4,10 +4,15 @@ import 'package:gyaanplant_learning_app/views/assessmet/select_assessment.dart';
 import 'package:gyaanplant_learning_app/views/home/home.dart';
 
 class CongratsScreen extends StatelessWidget {
-  const CongratsScreen({super.key});
+  final Map<String, dynamic> result;
+  const CongratsScreen({super.key, required this.result});
 
   @override
   Widget build(BuildContext context) {
+    // final int _correctAnswers = result['score'];
+    // final int _totalMarks = result['totalMarks'];
+    // final int _wrongAnswers = _totalMarks - _correctAnswers;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -31,9 +36,9 @@ class CongratsScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-                child: const Column(
+                child: Column(
                   children: [
-                    Text(
+                    const Text(
                       'Web Development Complete',
                       style: TextStyle(
                         fontFamily: 'Gilroy',
@@ -42,8 +47,8 @@ class CongratsScreen extends StatelessWidget {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    SizedBox(height: 20),
-                    Text(
+                    const SizedBox(height: 20),
+                    const Text(
                       'Congratulations! You have\ncompleted your Test with',
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -53,8 +58,8 @@ class CongratsScreen extends StatelessWidget {
                         color: Color.fromRGBO(17, 24, 39, 1),
                       ),
                     ),
-                    SizedBox(height: 40),
-                    Text(
+                    const SizedBox(height: 40),
+                    const Text(
                       'Marks obtained',
                       style: TextStyle(
                         fontFamily: 'Gilroy',
@@ -63,29 +68,30 @@ class CongratsScreen extends StatelessWidget {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    SizedBox(height: 6),
+                    const SizedBox(height: 6),
                     Text(
-                      '68%',
-                      style: TextStyle(
+                      '${result['percentage']}%',
+                      style: const TextStyle(
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
                         color: Colors.black,
                       ),
                     ),
-                    SizedBox(height: 50),
+                    const SizedBox(height: 50),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Row(
                           children: [
-                            CircleAvatar(
+                            const CircleAvatar(
                               radius: 6,
                               backgroundColor: Colors.green,
                             ),
-                            SizedBox(width: 6),
+                            const SizedBox(width: 6),
                             Text(
-                              '8 Correct Answers',
-                              style: TextStyle(
+                              // '$_correctAnswers Correct Answers',
+                              '10 Wrong Answers',
+                              style: const TextStyle(
                                 fontFamily: 'Gilroy',
                                 color: Color.fromRGBO(107, 114, 128, 1),
                                 fontSize: 14,
@@ -94,17 +100,18 @@ class CongratsScreen extends StatelessWidget {
                             ),
                           ],
                         ),
-                        SizedBox(width: 20),
+                        const SizedBox(width: 20),
                         Row(
                           children: [
-                            CircleAvatar(
+                            const CircleAvatar(
                               radius: 6,
                               backgroundColor: Colors.red,
                             ),
-                            SizedBox(width: 6),
+                            const SizedBox(width: 6),
                             Text(
-                              '2 Wrong Answers',
-                              style: TextStyle(
+                              // '$_wrongAnswers Wrong Answers',
+                              '0 Wrong Answers',
+                              style: const TextStyle(
                                 fontFamily: 'Gilroy',
                                 color: Color.fromRGBO(107, 114, 128, 1),
                                 fontSize: 14,

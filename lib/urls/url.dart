@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gyaanplant_learning_app/model/get_category.dart';
 import 'package:gyaanplant_learning_app/model/get_course.dart';
 import 'package:gyaanplant_learning_app/model/mcqs.dart';
@@ -17,7 +19,6 @@ class AppUrl {
   static const String updateProfileUrl = 'user/update-profile';
   static const String getCategoryUrl = 'category/get-category';
   static const String getAssessmentQuestionUrl = 'assessment/get-questions';
-  // static const String sendAnswers = 'assessment/submit';
 
   //  api call to send otp
   static Future<bool> sendOtp(String phoneNumber) async {
@@ -258,50 +259,53 @@ class AppUrl {
     }
   }
 
-  // static Future<void> submitAnswers({
-  //   required Map<String, String> selectedAnswers,
-  //   required BuildContext context,
-  // }) async {
-  //   final userId = await UserPreferences.getUserId();
+  static Future<Map<String, dynamic>?> submitAnswers({
+    required Map<String, String> selectedAnswers,
+    required BuildContext context,
+    required assessmentId,
+  }) async {
+    final userId = await UserPreferences.getUserId();
 
-  //   final answerList = selectedAnswers.entries.map((entry) {
-  //     return {
-  //       "questionId": entry.key,
-  //       "selectedOption": entry.value,
-  //     };
-  //   }).toList();
+    final answerList = selectedAnswers.entries.map((entry) {
+      return {
+        "questionId": entry.key,
+        "selectedOption": entry.value,
+      };
+    }).toList();
 
-  //   final body = {
-  //     "userId": userId,
-  //     "answers": answerList,
-  //   };
+    final body = {
+      "userId": userId,
+      "answers": answerList,
+    };
 
-  //   print('Answer list is:');
-  //   print(answerList);
-  //   print('Body is:');
-  //   print(body);
+    print('Answer list is:');
+    print(answerList);
+    print('Body is:');
+    print(body);
 
-  //   final response = await http.post(
-  //     Uri.parse(
-  //       'https://gyannplant-backend.onrender.com/api/assessment/submit',
-  //     ),
-  //     headers: {"Content-Type": "application/json"},
-  //     body: json.encode(body),
-  //   );
+    try {
+      final response = await http.post(
+        Uri.parse(
+          '$baseUrl/assessment/$assessmentId/submit',
+        ),
+        headers: {"Content-Type": "application/json"},
+        body: json.encode(body),
+      );
 
-  //   print('Response is');
-  //   print(response);
-
-  //   if (response.statusCode == 200) {
-  //     print('Apit success body is:');
-  //     print(response.body);
-  //     // Navigator.pushReplacement(
-  //     //   context,
-  //     //   MaterialPageRoute(builder: (_) => const CongratsScreen()),
-  //     // );
-  //   } else {
-  //     // Handle error
-  //     print("Submission failed: ${response.statusCode} - ${response.body}");
-  //   }
-  // }
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+        print('Api success body is:');
+        print(response.body);
+        Fluttertoast.showToast(msg: 'Assessment submitted Successfully');
+        print('assessment submitted!');
+        return responseData['data'];
+      } else {
+        // Handle error
+        print("Submission failed: ${response.statusCode} - ${response.body}");
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+    return null;
+  }
 }

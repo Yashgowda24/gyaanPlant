@@ -14,14 +14,14 @@
 //   ]
 // }
 
-// class SubmitAnswers {
-//   final String questionId;
-//   final String selectedOption;
+class SubmitAnswers {
+  final String questionId;
+  final String selectedOption;
 
-//   SubmitAnswers({required this.questionId, required this.selectedOption});
+  SubmitAnswers({required this.questionId, required this.selectedOption});
 
-//   Map<String, dynamic> toJson() => {
-//         'questionId': questionId,
-//         'selectedOption': selectedOption,
-//       };
-// }
+  Map<String, dynamic> toJson() => {
+        'questionId': questionId,
+        'selectedOption': selectedOption,
+      };
+}

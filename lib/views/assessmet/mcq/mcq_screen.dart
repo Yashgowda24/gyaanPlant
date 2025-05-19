@@ -174,7 +174,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gyaanplant_learning_app/components/login/green_button.dart';
-import 'package:gyaanplant_learning_app/model/mcqs.dart'; // Your model
+import 'package:gyaanplant_learning_app/model/mcqs.dart';
+import 'package:gyaanplant_learning_app/urls/url.dart';
+import 'package:gyaanplant_learning_app/views/assessmet/mcq/congrats.dart';
 
 class MCQAssessment extends StatefulWidget {
   const MCQAssessment({super.key});
@@ -188,33 +190,37 @@ class _MCQAssessmentState extends State<MCQAssessment> {
   int currentQuestionIndex = 0;
   int selectedIndex = -1;
   bool isLoading = true;
-  // Map<String, String> selectedAnswers = {};
+  Map<String, String> selectedAnswers = {};
+  String? assessmentId;
 
   @override
   void initState() {
     super.initState();
-    // loadQuestions();
+    loadQuestions();
   }
 
-  // Future<void> loadQuestions() async {
-  //   final mcq = await AppUrl.getAssessmentMCQ();
-  //   setState(() {
-  //     questions = mcq.data[0].questions;
-  //     isLoading = false;
-  //   });
-  // }
+  Future<void> loadQuestions() async {
+    final mcq = await AppUrl.getAssessmentMCQ();
+    setState(() {
+      questions = mcq.data[0].questions;
+      assessmentId = mcq.data[0].id;
+      isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    // if (isLoading) {
-    //   return const Scaffold(body: Center(child: CircularProgressIndicator()));
-    // }
+    if (isLoading) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
 
-    // if (currentQuestionIndex >= questions.length) {
-    //   return const CongratsScreen();
-    // }
+    if (currentQuestionIndex >= questions.length) {
+      return const CongratsScreen(
+        result: {},
+      );
+    }
 
-    // final currentQuestion = questions[currentQuestionIndex];
+    final currentQuestion = questions[currentQuestionIndex];
 
     return Scaffold(
       appBar: PreferredSize(
@@ -294,8 +300,7 @@ class _MCQAssessmentState extends State<MCQAssessment> {
             Padding(
               padding: const EdgeInsets.only(left: 10.0, right: 10.0),
               child: Text(
-                '',
-                // currentQuestion.question,
+                currentQuestion.question,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   fontFamily: 'Gilroy',
@@ -306,61 +311,60 @@ class _MCQAssessmentState extends State<MCQAssessment> {
               ),
             ),
             const SizedBox(height: 45),
-            // ...List.generate(currentQuestion.options.length, (index) {
-            //   bool isSelected = selectedIndex == index;
-            //   return GestureDetector(
-            //     onTap: () {
-            //       // setState(() {
-            //       //   selectedIndex = index;
-            //       //   final optionLetter = String.fromCharCode(65 + index);
-            //       //   selectedAnswers[currentQuestion.questionID] = optionLetter;
-            //       // });
-            //     },
-            //     child: Container(
-            //       margin:
-            //           const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-            //       padding:
-            //           const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-            //       decoration: BoxDecoration(
-            //         color: isSelected
-            //             ? const Color.fromARGB(81, 230, 215, 215)
-            //             : Colors.white,
-            //         border: Border.all(
-            //             color: isSelected
-            //                 ? Color.fromRGBO(61, 123, 66, 1)
-            //                 : Colors.transparent),
-            //         borderRadius: BorderRadius.circular(12),
-            //         boxShadow: const [
-            //           BoxShadow(
-            //             color: Colors.black12,
-            //             blurRadius: 15,
-            //             offset: Offset(0, 5),
-            //             spreadRadius: 0,
-            //           )
-            //         ],
-            //       ),
-            //       child: Row(
-            //         children: [
-            //           Expanded(
-            //             child: Text(
-            //               '',
-            //               // currentQuestion.options[index],
-            //               style: const TextStyle(
-            //                 color: Colors.black,
-            //                 fontWeight: FontWeight.w600,
-            //                 fontSize: 16,
-            //               ),
-            //             ),
-            //           ),
-            //           Icon(
-            //             isSelected ? Icons.check : Icons.radio_button_unchecked,
-            //             color: isSelected ? Colors.green : Colors.black,
-            //           ),
-            //         ],
-            //       ),
-            //     ),
-            //   );
-            // }),
+            ...List.generate(currentQuestion.options.length, (index) {
+              bool isSelected = selectedIndex == index;
+              return GestureDetector(
+                onTap: () {
+                  setState(() {
+                    selectedIndex = index;
+                    selectedAnswers[currentQuestion.questionID] =
+                        currentQuestion.options[index];
+                  });
+                },
+                child: Container(
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                  decoration: BoxDecoration(
+                    color: isSelected
+                        ? const Color.fromARGB(81, 230, 215, 215)
+                        : Colors.white,
+                    border: Border.all(
+                        color: isSelected
+                            ? Color.fromRGBO(61, 123, 66, 1)
+                            : Colors.transparent),
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 15,
+                        offset: Offset(0, 5),
+                        spreadRadius: 0,
+                      )
+                    ],
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          currentQuestion.options[index],
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ),
+                      Icon(
+                        isSelected ? Icons.check : Icons.radio_button_unchecked,
+                        color: isSelected ? Colors.green : Colors.black,
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }),
             const SizedBox(height: 45),
             GreenButton(
               text: currentQuestionIndex == questions.length - 1
@@ -372,18 +376,27 @@ class _MCQAssessmentState extends State<MCQAssessment> {
               //     selectedIndex = -1;
               //   });
               // },
-              onPressed: () {
-                // if (currentQuestionIndex == questions.length - 1) {
-                //   AppUrl.submitAnswers(
-                //     selectedAnswers: selectedAnswers,
-                //     context: context,
-                //   );
-                // } else {
-                //   setState(() {
-                //     currentQuestionIndex++;
-                //     selectedIndex = -1;
-                //   });
-                // }
+              onPressed: () async {
+                if (currentQuestionIndex == questions.length - 1) {
+                  final result = await AppUrl.submitAnswers(
+                    selectedAnswers: selectedAnswers,
+                    context: context,
+                    assessmentId: assessmentId,
+                  );
+                  if (result != null) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CongratsScreen(result: result),
+                      ),
+                    );
+                  }
+                } else {
+                  setState(() {
+                    currentQuestionIndex++;
+                    selectedIndex = -1;
+                  });
+                }
               },
             ),
           ],
