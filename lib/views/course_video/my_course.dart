@@ -1,13 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:gyaanplant_learning_app/views/course_video/course_video.dart';
+import 'package:gyaanplant_learning_app/providers/course_provider.dart';
+import 'package:gyaanplant_learning_app/styles/styles.dart';
+import 'package:gyaanplant_learning_app/views/course_video/lesson_body.dart';
 import 'package:gyaanplant_learning_app/views/home/home.dart';
+import 'package:provider/provider.dart';
 
-class MyCourse extends StatelessWidget {
+class MyCourse extends StatefulWidget {
   const MyCourse({super.key});
 
   @override
+  State<MyCourse> createState() => _MyCourseState();
+}
+
+class _MyCourseState extends State<MyCourse> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<CourseProvider>(context, listen: false).fetchCourses();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final _courseProvider = Provider.of<CourseProvider>(context);
+
+    if (_courseProvider.isLoading) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+    final _courses = _courseProvider.courses;
+
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(kToolbarHeight),
@@ -82,25 +107,6 @@ class MyCourse extends StatelessWidget {
                             ],
                           ),
                         )
-                        // Spacer(),
-                        // GestureDetector(
-                        //   onTap: () {
-                        //     Navigator.push(
-                        //       context,
-                        //       MaterialPageRoute(
-                        //         builder: (context) => MyCourse(),
-                        //       ),
-                        //     );
-                        //   },
-                        //   child: Text(
-                        //     "My courses",
-                        //     style: TextStyle(
-                        //       fontFamily: 'Gilroy',
-                        //       color: Color.fromRGBO(61, 92, 255, 1),
-                        //       fontWeight: FontWeight.w400,
-                        //     ),
-                        //   ),
-                        // ),
                       ],
                     ),
                     const SizedBox(height: 8),
@@ -153,82 +159,92 @@ class MyCourse extends StatelessWidget {
                   ],
                 ),
               ),
-              CourseSection(
-                title: 'My Courses',
-                lessons: [
-                  LessonCard(
-                    isMyCourseScreen: true,
-                    progressText: '24/24',
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => LessonVideoScreen(
-                            lessonNumber: 1,
-                          ),
-                        ),
-                      );
-                    },
-                    image: 'assets/images/home/unsplash_KW3m50XRhjk_2.png',
-                    title: 'Web Development',
-                  ),
-                  LessonCard(
-                    isMyCourseScreen: true,
-                    progressText: '16/21',
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => LessonVideoScreen(
-                            lessonNumber: 1,
-                          ),
-                        ),
-                      );
-                    },
-                    image: 'assets/images/home/unsplash_KW3m50XRhjk_3.png',
-                    title: 'UI/UX Design',
-                  ),
-                ],
-              ),
               Padding(
-                padding: const EdgeInsets.only(right: 15.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                padding: const EdgeInsets.only(bottom: 20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    LessonCard(
-                      isMyCourseScreen: true,
-                      progressText: '16/21',
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => LessonVideoScreen(
-                              lessonNumber: 1,
-                            ),
-                          ),
-                        );
-                      },
-                      image: 'assets/images/home/unsplash_KW3m50XRhjk_3.png',
-                      title: 'UI/UX Design',
+                    const SizedBox(
+                      height: 20.0,
                     ),
-                    SizedBox(
-                      width: 8.0,
+                    const Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Text(
+                        'My courses',
+                        style: kHomeCourseStyle,
+                      ),
                     ),
-                    LessonCard(
-                      isMyCourseScreen: true,
-                      progressText: '16/21',
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => LessonVideoScreen(
-                              lessonNumber: 1,
-                            ),
-                          ),
-                        );
-                      },
-                      image: 'assets/images/home/unsplash_KW3m50XRhjk_3.png',
-                      title: 'UI/UX Design',
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        LessonCard(
+                          isMyCourseScreen: true,
+                          progressText: '16/21',
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => LessonBody()
+                              ),
+                            );
+                          },
+                          image: _courses[0].thumbnail,
+                          title: _courses[0].title,
+                        ),
+                        SizedBox(
+                          width: 8.0,
+                        ),
+                        LessonCard(
+                          isMyCourseScreen: true,
+                          progressText: '16/21',
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => LessonBody()
+                              ),
+                            );
+                          },
+                          image: _courses[1].thumbnail,
+                          title: _courses[1].title,
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        LessonCard(
+                          isMyCourseScreen: true,
+                          progressText: '16/21',
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => LessonBody()
+                              ),
+                            );
+                          },
+                          image: _courses[2].thumbnail,
+                          title: _courses[2].title,
+                        ),
+                        SizedBox(
+                          width: 8.0,
+                        ),
+                        LessonCard(
+                          isMyCourseScreen: true,
+                          progressText: '16/21',
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => LessonBody()
+                              ),
+                            );
+                          },
+                          image: _courses[0].thumbnail,
+                          title: _courses[0].title,
+                        ),
+                      ],
                     ),
                   ],
                 ),

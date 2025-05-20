@@ -17,6 +17,7 @@ class LoginWidget extends StatefulWidget {
   final Widget? customChild;
   final void Function(String)? onOtpSubmit;
   final TextEditingController? phoneNumberController;
+  final String? errorText;
 
   LoginWidget({
     required this.image,
@@ -31,6 +32,7 @@ class LoginWidget extends StatefulWidget {
     this.customChild,
     this.phoneNumberController,
     this.onOtpSubmit,
+    this.errorText,
   });
 
   @override
@@ -91,6 +93,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                       textAlign: TextAlign.center,
                       decoration: InputDecoration(
                         hintText: widget.hintText,
+                        errorText: widget.errorText,
                         hintStyle: GoogleFonts.poppins(
                           fontSize: 16.0,
                           fontWeight: FontWeight.w600,
@@ -111,6 +114,8 @@ class _LoginWidgetState extends State<LoginWidget> {
                             color: Color.fromRGBO(217, 217, 217, 1),
                           ),
                         ),
+                        errorBorder: InputBorder.none,
+                        focusedErrorBorder: InputBorder.none,
                       ),
                       style: GoogleFonts.poppins(
                         fontSize: 16.0,

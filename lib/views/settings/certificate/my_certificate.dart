@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:gyaanplant_learning_app/components/login/green_button.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class MyCertificateScreen extends StatelessWidget {
   const MyCertificateScreen({super.key});
@@ -51,7 +55,43 @@ class MyCertificateScreen extends StatelessWidget {
             ),
             GreenButton(
               text: 'Download Certificate',
-              onPressed: () {},
+              onPressed: () async {
+                // Ask storage permission
+                var status = await Permission.manageExternalStorage.request();
+                if (!status.isGranted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Storage permission is required'),
+                    ),
+                  );
+                  return;
+                }
+
+                try {
+                  // Load asset image bytes
+                  final byteData = await DefaultAssetBundle.of(context)
+                      .load('assets/images/home/Certificate.png');
+                  final bytes = byteData.buffer.asUint8List();
+
+                  // Get download path
+                  final directory = await getExternalStorageDirectory();
+                  final downloadPath = directory!.path;
+
+                  // Create a file and write bytes
+                  final filePath = '$downloadPath/Certificate.png';
+                  final file = File(filePath);
+                  await file.writeAsBytes(bytes);
+
+                  // show success message
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Certificate saved to: $filePath')),
+                  );
+                } catch (e) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Download failed: $e')),
+                  );
+                }
+              },
             ),
           ],
         ),
