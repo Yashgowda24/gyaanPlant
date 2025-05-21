@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:gyaanplant_learning_app/providers/course_provider.dart';
 import 'package:gyaanplant_learning_app/styles/styles.dart';
@@ -31,52 +30,52 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _screens[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (index) => setState(() => _currentIndex = index),
-        showUnselectedLabels: true,
-        selectedLabelStyle: const TextStyle(
-          fontFamily: 'Gilroy',
-          fontSize: 11.0,
-          color: Color.fromRGBO(61, 34, 160, 1),
-          height: 2,
-          fontWeight: FontWeight.w600,
-        ),
-        unselectedLabelStyle: const TextStyle(
-          fontFamily: 'Gilroy',
-          fontSize: 11.0,
-          color: Color.fromRGBO(149, 151, 168, 1),
-          height: 2,
-          fontWeight: FontWeight.w500,
-        ),
-        type: BottomNavigationBarType.fixed,
-        items: [
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset('assets/images/navBar/category.svg'),
-            activeIcon:
-                SvgPicture.asset('assets/images/navBar/sel_category.svg'),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset('assets/images/navBar/video-play.svg'),
-            activeIcon:
-                SvgPicture.asset('assets/images/navBar/sel_video-play.svg'),
-            label: 'Library',
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset('assets/images/navBar/book-square.svg'),
-            activeIcon:
-                SvgPicture.asset('assets/images/navBar/sel_book-square.svg'),
-            label: 'Assessment',
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset('assets/images/navBar/profile.svg'),
-            activeIcon:
-                SvgPicture.asset('assets/images/navBar/sel_profile.svg'),
-            label: 'Profile',
-          ),
-        ],
-      ),
+      // bottomNavigationBar: BottomNavigationBar(
+      //   currentIndex: _currentIndex,
+      //   onTap: (index) => setState(() => _currentIndex = index),
+      //   showUnselectedLabels: true,
+      //   selectedLabelStyle: const TextStyle(
+      //     fontFamily: 'Gilroy',
+      //     fontSize: 11.0,
+      //     color: Color.fromRGBO(61, 34, 160, 1),
+      //     height: 2,
+      //     fontWeight: FontWeight.w600,
+      //   ),
+      //   unselectedLabelStyle: const TextStyle(
+      //     fontFamily: 'Gilroy',
+      //     fontSize: 11.0,
+      //     color: Color.fromRGBO(149, 151, 168, 1),
+      //     height: 2,
+      //     fontWeight: FontWeight.w500,
+      //   ),
+      //   type: BottomNavigationBarType.fixed,
+      //   items: [
+      //     BottomNavigationBarItem(
+      //       icon: SvgPicture.asset('assets/images/navBar/category.svg'),
+      //       activeIcon:
+      //           SvgPicture.asset('assets/images/navBar/sel_category.svg'),
+      //       label: 'Home',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: SvgPicture.asset('assets/images/navBar/video-play.svg'),
+      //       activeIcon:
+      //           SvgPicture.asset('assets/images/navBar/sel_video-play.svg'),
+      //       label: 'Library',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: SvgPicture.asset('assets/images/navBar/book-square.svg'),
+      //       activeIcon:
+      //           SvgPicture.asset('assets/images/navBar/sel_book-square.svg'),
+      //       label: 'Assessment',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: SvgPicture.asset('assets/images/navBar/profile.svg'),
+      //       activeIcon:
+      //           SvgPicture.asset('assets/images/navBar/sel_profile.svg'),
+      //       label: 'Profile',
+      //     ),
+      //   ],
+      // ),
     );
   }
 }

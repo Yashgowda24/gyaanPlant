@@ -108,7 +108,7 @@ class _SelectAssessmentCategoryState extends State<SelectAssessmentCategory> {
                       },
                     ),
                     const SizedBox(
-                      height: 16,
+                      height: 20,
                     ),
                     SelectCourse(
                       image1: categories[2].imageUrl,
@@ -159,6 +159,8 @@ class SelectCourse extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double imageSize = MediaQuery.of(context).size.width * 0.3;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -166,7 +168,11 @@ class SelectCourse extends StatelessWidget {
           onTap: onPressed1,
           child: Column(
             children: [
-              Image.network(image1 ?? ''),
+              Image.network(
+                image1 ?? '',
+                width: imageSize,
+                fit: BoxFit.cover,
+              ),
               const SizedBox(
                 height: 10,
               ),
@@ -189,7 +195,11 @@ class SelectCourse extends StatelessWidget {
           onTap: onPressed2,
           child: Column(
             children: [
-              Image.network(image2 ?? ''),
+              Image.network(
+                image2 ?? '',
+                width: imageSize,
+                fit: BoxFit.cover,
+              ),
               const SizedBox(
                 height: 10,
               ),

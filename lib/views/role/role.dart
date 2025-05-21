@@ -34,7 +34,7 @@ class _ChooseRoleState extends State<ChooseRole> {
               heading: 'Roles Selection',
               subText: 'Choose your role to continue',
               buttonText: 'Continue',
-              hintText: 'Enter your number',
+              hintText: '',
               isOtpField: false,
               showTextField: false,
               showButton: false,
@@ -119,8 +119,8 @@ class _RoleSelectorState extends State<RoleSelector> {
       padding: const EdgeInsets.symmetric(horizontal: 30),
       child: Column(
         children: [
-          buildOption('Candidate', 'assets/images/learning_goals/Student.png'),
-          buildOption('Corporate', 'assets/images/learning_goals/Employee.png'),
+          buildOption('Student', 'assets/images/learning_goals/Student.png'),
+          buildOption('Employee', 'assets/images/learning_goals/Employee.png'),
         ],
       ),
     );

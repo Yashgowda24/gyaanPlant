@@ -39,6 +39,7 @@ class MainNavigationState extends State<MainNavigation> {
       bottomNavigationBar: showCourseScreen
           ? BottomNavigationBar(
               currentIndex: _currentIndex,
+              unselectedItemColor: const Color.fromRGBO(61, 34, 160, 1),
               items: [
                 _navItem('category.svg', 'sel_category.svg', 'Home'),
                 _navItem('video-play.svg', 'sel_video-play.svg', 'Library'),
@@ -59,6 +60,7 @@ class MainNavigationState extends State<MainNavigation> {
             )
           : BottomNavigationBar(
               currentIndex: _currentIndex,
+              unselectedItemColor: const Color.fromRGBO(61, 34, 160, 1),
               items: [
                 _navItem('category.svg', 'sel_category.svg', 'Home'),
                 _navItem('video-play.svg', 'sel_video-play.svg', 'Library'),

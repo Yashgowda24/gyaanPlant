@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gyaanplant_learning_app/components/login/green_button.dart';
 import 'package:gyaanplant_learning_app/views/assessmet/select_assessment.dart';
-import 'package:gyaanplant_learning_app/views/home/home.dart';
+import 'package:gyaanplant_learning_app/views/main_navigation.dart';
 
 class CongratsScreen extends StatelessWidget {
   final Map<String, dynamic> result;
@@ -168,7 +168,7 @@ class CongratsScreen extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => HomeScreen(),
+                          builder: (context) => MainNavigation(),
                         ),
                       );
                     },
