@@ -4,10 +4,14 @@ import 'package:gyaanplant_learning_app/providers/course_provider.dart';
 import 'package:gyaanplant_learning_app/styles/styles.dart';
 import 'package:gyaanplant_learning_app/views/assessmet/assessmet.dart';
 import 'package:gyaanplant_learning_app/views/course_video/lesson_body.dart';
+import 'package:gyaanplant_learning_app/views/home/animations/course_animation.dart';
+import 'package:gyaanplant_learning_app/views/home/animations/navigation_animation.dart';
+import 'package:gyaanplant_learning_app/views/home/animations/notification_animation.dart';
 import 'package:gyaanplant_learning_app/views/library/library.dart';
 import 'package:gyaanplant_learning_app/views/main_navigation.dart';
 import 'package:gyaanplant_learning_app/views/user_profile/profile.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -30,52 +34,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _screens[_currentIndex],
-      // bottomNavigationBar: BottomNavigationBar(
-      //   currentIndex: _currentIndex,
-      //   onTap: (index) => setState(() => _currentIndex = index),
-      //   showUnselectedLabels: true,
-      //   selectedLabelStyle: const TextStyle(
-      //     fontFamily: 'Gilroy',
-      //     fontSize: 11.0,
-      //     color: Color.fromRGBO(61, 34, 160, 1),
-      //     height: 2,
-      //     fontWeight: FontWeight.w600,
-      //   ),
-      //   unselectedLabelStyle: const TextStyle(
-      //     fontFamily: 'Gilroy',
-      //     fontSize: 11.0,
-      //     color: Color.fromRGBO(149, 151, 168, 1),
-      //     height: 2,
-      //     fontWeight: FontWeight.w500,
-      //   ),
-      //   type: BottomNavigationBarType.fixed,
-      //   items: [
-      //     BottomNavigationBarItem(
-      //       icon: SvgPicture.asset('assets/images/navBar/category.svg'),
-      //       activeIcon:
-      //           SvgPicture.asset('assets/images/navBar/sel_category.svg'),
-      //       label: 'Home',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: SvgPicture.asset('assets/images/navBar/video-play.svg'),
-      //       activeIcon:
-      //           SvgPicture.asset('assets/images/navBar/sel_video-play.svg'),
-      //       label: 'Library',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: SvgPicture.asset('assets/images/navBar/book-square.svg'),
-      //       activeIcon:
-      //           SvgPicture.asset('assets/images/navBar/sel_book-square.svg'),
-      //       label: 'Assessment',
-      //     ),
-      //     BottomNavigationBarItem(
-      //       icon: SvgPicture.asset('assets/images/navBar/profile.svg'),
-      //       activeIcon:
-      //           SvgPicture.asset('assets/images/navBar/sel_profile.svg'),
-      //       label: 'Profile',
-      //     ),
-      //   ],
-      // ),
     );
   }
 }
@@ -102,9 +60,7 @@ class _HomeContentState extends State<HomeContent> {
     final courseProvider = Provider.of<CourseProvider>(context);
 
     if (courseProvider.isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
+      return _buildShimmerLoading();
     }
     final courses = courseProvider.courses;
     return SingleChildScrollView(
@@ -127,9 +83,7 @@ class _HomeContentState extends State<HomeContent> {
                 ),
                 Positioned(
                   right: 0,
-                  child: IconButton(
-                    icon: const Icon(Icons.notifications_none_rounded,
-                        color: Colors.black),
+                  child: AnimatedNotificationIcon(
                     onPressed: () {
                       print('Notification icon pressed!');
                     },
@@ -140,95 +94,242 @@ class _HomeContentState extends State<HomeContent> {
           ),
           LearningProgressCard(),
           const SizedBox(height: 20),
-          CourseSection(
-            title: 'Course 1',
-            lessons: [
-              LessonCard(
-                image: courses[0].thumbnail,
-                title: courses[0].title,
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => LessonBody(),
-                      // LessonVideoScreen(
-                      //   lessonNumber: 2,
-                      // ),
-                    ),
-                  );
-                },
-              ),
-              LessonCard(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => LessonBody(),
-                    ),
-                  );
-                },
-                image: courses[1].thumbnail,
-                title: courses[1].title,
-              ),
-            ],
+          FadeSlideTransition(
+            child: CourseSection(
+              title: 'Course 1',
+              lessons: [
+                LessonCard(
+                  image: courses[0].thumbnail,
+                  title: courses[0].title,
+                  onPressed: () {
+                    navigateWithFade(
+                      context,
+                      LessonBody(),
+                    );
+                  },
+                ),
+                LessonCard(
+                  onPressed: () {
+                    navigateWithFade(
+                      context,
+                      LessonBody(),
+                    );
+                  },
+                  image: courses[1].thumbnail,
+                  title: courses[1].title,
+                ),
+              ],
+            ),
           ),
-          CourseSection(
-            title: 'Course 2',
-            lessons: [
-              LessonCard(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => LessonBody(),
-                    ),
-                  );
-                },
-                image: courses[1].thumbnail,
-                title: courses[1].title,
-              ),
-              LessonCard(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => LessonBody(),
-                    ),
-                  );
-                },
-                image: courses[0].thumbnail,
-                title: courses[0].title,
-              ),
-            ],
+          FadeSlideTransition(
+            child: CourseSection(
+              title: 'Course 2',
+              lessons: [
+                LessonCard(
+                  onPressed: () {
+                    navigateWithFade(
+                      context,
+                      LessonBody(),
+                    );
+                  },
+                  image: courses[1].thumbnail,
+                  title: courses[1].title,
+                ),
+                LessonCard(
+                  onPressed: () {
+                    navigateWithFade(
+                      context,
+                      LessonBody(),
+                    );
+                  },
+                  image: courses[0].thumbnail,
+                  title: courses[0].title,
+                ),
+              ],
+            ),
           ),
-          CourseSection(
-            title: 'Course 3',
-            lessons: [
-              LessonCard(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => LessonBody(),
+          FadeSlideTransition(
+            child: CourseSection(
+              title: 'Course 3',
+              lessons: [
+                LessonCard(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => LessonBody(),
+                      ),
+                    );
+                  },
+                  image: courses[0].thumbnail,
+                  title: courses[0].title,
+                ),
+                LessonCard(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => LessonBody(),
+                      ),
+                    );
+                  },
+                  image: courses[1].thumbnail,
+                  title: courses[1].title,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildShimmerLoading() {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.only(
+          top: 30.0, left: 16.0, right: 16.0, bottom: 20.0),
+      child: Shimmer.fromColors(
+        baseColor: Colors.grey[300]!,
+        highlightColor: Colors.grey[100]!,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Logo and notification icon placeholder
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Center(
+                    child: Container(
+                      width: 120,
+                      height: 60,
+                      color: Colors.white,
                     ),
-                  );
-                },
-                image: courses[0].thumbnail,
-                title: courses[0].title,
-              ),
-              LessonCard(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => LessonBody(),
+                  ),
+                  Positioned(
+                    right: 0,
+                    child: Container(
+                      width: 24,
+                      height: 24,
+                      color: Colors.white,
                     ),
-                  );
-                },
-                image: courses[1].thumbnail,
-                title: courses[1].title,
+                  )
+                ],
               ),
-            ],
+            ),
+
+            // Learning progress card placeholder
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 10),
+                  Row(
+                    children: [
+                      Container(
+                        width: 100,
+                        height: 16,
+                        color: Colors.white,
+                      ),
+                      const Spacer(),
+                      Container(
+                        width: 80,
+                        height: 16,
+                        color: Colors.white,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  Container(
+                    width: 150,
+                    height: 24,
+                    color: Colors.white,
+                  ),
+                  const SizedBox(height: 20),
+                  Container(
+                    height: 6,
+                    width: double.infinity,
+                    color: Colors.white,
+                  ),
+                ],
+              ),
+            ),
+
+            const SizedBox(height: 20),
+
+            // Course sections placeholders
+            ...List.generate(3, (index) => _buildShimmerCourseSection()),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildShimmerCourseSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 20),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              width: 80,
+              height: 20,
+              color: Colors.white,
+            ),
+            Container(
+              width: 70,
+              height: 16,
+              color: Colors.white,
+            ),
+          ],
+        ),
+        const SizedBox(height: 10),
+        Row(
+          children: [
+            _buildShimmerLessonCard(),
+            const SizedBox(width: 10),
+            _buildShimmerLessonCard(),
+          ],
+        ),
+        const SizedBox(height: 20),
+      ],
+    );
+  }
+
+  Widget _buildShimmerLessonCard() {
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.42,
+      margin: const EdgeInsets.symmetric(vertical: 10.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            height: 120,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Container(
+            width: double.infinity,
+            height: 16,
+            color: Colors.white,
+          ),
+          const SizedBox(height: 4),
+          Container(
+            width: 100,
+            height: 14,
+            color: Colors.white,
           ),
         ],
       ),
@@ -464,12 +565,6 @@ class LearningProgressCard extends StatelessWidget {
               Spacer(),
               GestureDetector(
                 onTap: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  // builder: (context) => MyCourse(),
-                  //   ),
-                  // );
                   (context.findAncestorStateOfType<MainNavigationState>())
                       ?.openCourseScreen();
                 },
