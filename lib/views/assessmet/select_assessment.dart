@@ -48,6 +48,7 @@ class _SelectAssessmentCategoryState extends State<SelectAssessmentCategory> {
             )
           ]),
           child: AppBar(
+            centerTitle: true,
             title: const Text(
               'Select Category',
               style: TextStyle(
@@ -76,7 +77,7 @@ class _SelectAssessmentCategoryState extends State<SelectAssessmentCategory> {
                       fontFamily: 'Gilroy',
                       fontSize: 20.0,
                       color: Color.fromRGBO(0, 0, 0, 1),
-                      fontWeight: FontWeight.w700,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),
@@ -159,7 +160,8 @@ class SelectCourse extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double imageSize = MediaQuery.of(context).size.width * 0.3;
+    final double imageWidth = MediaQuery.of(context).size.width * 0.35;
+    final double imageHeight = 160;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -168,10 +170,22 @@ class SelectCourse extends StatelessWidget {
           onTap: onPressed1,
           child: Column(
             children: [
-              Image.network(
-                image1 ?? '',
-                width: imageSize,
-                fit: BoxFit.cover,
+              Container(
+                width: imageWidth,
+                height: imageHeight,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.network(
+                    image1 ?? '',
+                    fit: BoxFit.contain,
+                    errorBuilder: (context, error, stackTrace) => Container(
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
               ),
               const SizedBox(
                 height: 10,
@@ -195,10 +209,19 @@ class SelectCourse extends StatelessWidget {
           onTap: onPressed2,
           child: Column(
             children: [
-              Image.network(
-                image2 ?? '',
-                width: imageSize,
-                fit: BoxFit.cover,
+              Container(
+                width: imageWidth,
+                height: imageHeight,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: Image.network(
+                    image2 ?? '',
+                    fit: BoxFit.contain,
+                  ),
+                ),
               ),
               const SizedBox(
                 height: 10,

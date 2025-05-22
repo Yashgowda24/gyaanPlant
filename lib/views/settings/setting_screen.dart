@@ -32,6 +32,7 @@ class SettingScreen extends StatelessWidget {
               ],
             ),
             child: AppBar(
+              centerTitle: true,
               title: const Text(
                 'Settings',
                 style: TextStyle(

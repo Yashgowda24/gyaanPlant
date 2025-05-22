@@ -10,7 +10,7 @@ import 'package:gyaanplant_learning_app/shared_preferences/user_shared_preferenc
 import 'package:http/http.dart' as http;
 
 class AppUrl {
-  static String baseUrl = "https://gyannplant-backend.onrender.com/api";
+  static const String baseUrl = "https://gyannplant-backend.onrender.com/api";
   static const String sendOtpUrl = 'auth/send-otp';
   static const String verifyOtpUrl = 'auth/verify-otp';
   static const String getCourseUrl = 'course/get-course';

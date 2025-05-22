@@ -8,6 +8,7 @@ import 'package:gyaanplant_learning_app/views/assessmet/assessmet.dart';
 import 'package:gyaanplant_learning_app/views/course_video/course_completed.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class LessonBody extends StatefulWidget {
   const LessonBody({super.key});
@@ -159,7 +160,7 @@ class _LessonBodyWidgetState extends State<LessonBodyWidget> {
         SizedBox(
           height: 20,
         ),
-        NetworkVideoPlayer(videoUrl: widget.lessonVideoUrl),
+        AdaptiveVideoPlayer(videoUrl: widget.lessonVideoUrl),
         const SizedBox(height: 20),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -287,19 +288,234 @@ class _LessonBodyWidgetState extends State<LessonBodyWidget> {
   }
 }
 
-class NetworkVideoPlayer extends StatefulWidget {
+// class NetworkVideoPlayer extends StatefulWidget {
+//   final String videoUrl;
+
+//   const NetworkVideoPlayer({Key? key, required this.videoUrl})
+//       : super(key: key);
+
+//   @override
+//   State<NetworkVideoPlayer> createState() => _NetworkVideoPlayerState();
+// }
+
+// class _NetworkVideoPlayerState extends State<NetworkVideoPlayer> {
+//   late VideoPlayerController _controller;
+//   bool _showControls = true;
+//   Timer? _hideTimer;
+//   bool _isFullscreen = false;
+//   double _playbackSpeed = 1.0;
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     _controller = VideoPlayerController.network(widget.videoUrl)
+//       ..initialize().then((_) {
+//         setState(() {});
+//         _controller.play();
+//         _startHideTimer();
+//       });
+//   }
+
+//   void _startHideTimer() {
+//     _hideTimer?.cancel();
+//     _hideTimer = Timer(const Duration(seconds: 3), () {
+//       if (_controller.value.isPlaying) {
+//         setState(() => _showControls = false);
+//       }
+//     });
+//   }
+
+//   void _togglePlayPause() {
+//     setState(() {
+//       if (_controller.value.isPlaying) {
+//         _controller.pause();
+//         _showControls = true;
+//       } else {
+//         _controller.play();
+//         _startHideTimer();
+//       }
+//     });
+//   }
+
+//   void _onTapVideo() {
+//     setState(() => _showControls = !_showControls);
+//     if (_controller.value.isPlaying && _showControls) {
+//       _startHideTimer();
+//     }
+//   }
+
+//   void _seekRelative(Duration offset) {
+//     final newPosition = _controller.value.position + offset;
+//     _controller.seekTo(newPosition);
+//   }
+
+//   void _changePlaybackSpeed() {
+//     final speeds = [0.5, 1.0, 1.25, 1.5, 2.0];
+//     final currentIndex = speeds.indexOf(_playbackSpeed);
+//     final nextSpeed = speeds[(currentIndex + 1) % speeds.length];
+//     setState(() {
+//       _playbackSpeed = nextSpeed;
+//       _controller.setPlaybackSpeed(nextSpeed);
+//     });
+//   }
+
+//   void _toggleFullscreen() {
+//     setState(() => _isFullscreen = !_isFullscreen);
+//     if (_isFullscreen) {
+//       Navigator.of(context).push(
+//         MaterialPageRoute(
+//           builder: (context) => Scaffold(
+//             backgroundColor: Colors.black,
+//             body: SafeArea(
+//               child: Center(
+//                 child: NetworkVideoPlayer(videoUrl: widget.videoUrl),
+//               ),
+//             ),
+//           ),
+//         ),
+//       );
+//     } else {
+//       Navigator.of(context).pop();
+//     }
+//   }
+
+//   @override
+//   void dispose() {
+//     _hideTimer?.cancel();
+//     _controller.dispose();
+//     super.dispose();
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return _controller.value.isInitialized
+//         ? AspectRatio(
+//             aspectRatio: _controller.value.aspectRatio,
+//             child: GestureDetector(
+//               onTap: _onTapVideo,
+//               child: Stack(
+//                 alignment: Alignment.center,
+//                 children: [
+//                   VideoPlayer(_controller),
+
+//                   // Center Controls
+//                   if (_showControls) ...[
+//                     Positioned(
+//                       left: 30,
+//                       child: IconButton(
+//                         icon: const Icon(Icons.replay_10,
+//                             size: 40, color: Colors.white),
+//                         onPressed: () =>
+//                             _seekRelative(const Duration(seconds: -10)),
+//                       ),
+//                     ),
+//                     IconButton(
+//                       icon: Icon(
+//                         _controller.value.isPlaying
+//                             ? Icons.pause_circle
+//                             : Icons.play_circle,
+//                         size: 64,
+//                         color: Colors.white,
+//                       ),
+//                       onPressed: _togglePlayPause,
+//                     ),
+//                     Positioned(
+//                       right: 30,
+//                       child: IconButton(
+//                         icon: const Icon(Icons.forward_10,
+//                             size: 40, color: Colors.white),
+//                         onPressed: () =>
+//                             _seekRelative(const Duration(seconds: 10)),
+//                       ),
+//                     ),
+//                   ],
+
+//                   // Bottom Controls
+//                   if (_showControls)
+//                     Positioned(
+//                       bottom: 10,
+//                       left: 10,
+//                       right: 10,
+//                       child: Column(
+//                         children: [
+//                           VideoProgressIndicator(
+//                             _controller,
+//                             allowScrubbing: true,
+//                             colors: const VideoProgressColors(
+//                               playedColor: Colors.red,
+//                               bufferedColor: Colors.white54,
+//                               backgroundColor: Colors.white30,
+//                             ),
+//                           ),
+//                           Row(
+//                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                             children: [
+//                               Text(
+//                                 _formatDuration(_controller.value.position),
+//                                 style: const TextStyle(color: Colors.white),
+//                               ),
+//                               Row(
+//                                 children: [
+//                                   // Playback Speed Button
+//                                   TextButton(
+//                                     onPressed: _changePlaybackSpeed,
+//                                     child: Text(
+//                                       "${_playbackSpeed}x",
+//                                       style: const TextStyle(
+//                                           color: Colors.white, fontSize: 14),
+//                                     ),
+//                                   ),
+//                                   // Fullscreen Button
+//                                   IconButton(
+//                                     icon: const Icon(
+//                                       Icons.fullscreen,
+//                                       color: Colors.white,
+//                                     ),
+//                                     onPressed: _toggleFullscreen,
+//                                   ),
+//                                 ],
+//                               ),
+//                               Text(
+//                                 _formatDuration(_controller.value.duration),
+//                                 style: const TextStyle(color: Colors.white),
+//                               ),
+//                             ],
+//                           )
+//                         ],
+//                       ),
+//                     ),
+//                 ],
+//               ),
+//             ),
+//           )
+//         : const SizedBox(
+//             height: 200,
+//             child: Center(child: CircularProgressIndicator()),
+//           );
+//   }
+
+//   String _formatDuration(Duration position) {
+//     final minutes = position.inMinutes.remainder(60).toString().padLeft(2, '0');
+//     final seconds = position.inSeconds.remainder(60).toString().padLeft(2, '0');
+//     return "$minutes:$seconds";
+//   }
+// }
+
+class AdaptiveVideoPlayer extends StatefulWidget {
   final String videoUrl;
 
-  const NetworkVideoPlayer({Key? key, required this.videoUrl})
+  const AdaptiveVideoPlayer({Key? key, required this.videoUrl})
       : super(key: key);
 
   @override
-  State<NetworkVideoPlayer> createState() => _NetworkVideoPlayerState();
+  State<AdaptiveVideoPlayer> createState() => _AdaptiveVideoPlayerState();
 }
 
-class _NetworkVideoPlayerState extends State<NetworkVideoPlayer> {
-  late VideoPlayerController _controller;
-  bool _showControls = true;
+class _AdaptiveVideoPlayerState extends State<AdaptiveVideoPlayer> {
+  bool _isYouTube = false;
+  late dynamic
+      _controller; // Can be either VideoPlayerController or YoutubePlayerController
+  bool _showControls = false;
   Timer? _hideTimer;
   bool _isFullscreen = false;
   double _playbackSpeed = 1.0;
@@ -307,6 +523,34 @@ class _NetworkVideoPlayerState extends State<NetworkVideoPlayer> {
   @override
   void initState() {
     super.initState();
+    _isYouTube = _checkIfYouTubeUrl(widget.videoUrl);
+
+    if (_isYouTube) {
+      _initYouTubePlayer();
+    } else {
+      _initVideoPlayer();
+    }
+  }
+
+  bool _checkIfYouTubeUrl(String url) {
+    return url.contains('youtube.com') || url.contains('youtu.be');
+  }
+
+  void _initYouTubePlayer() {
+    final videoId = YoutubePlayer.convertUrlToId(widget.videoUrl) ?? '';
+    _controller = YoutubePlayerController(
+      initialVideoId: videoId,
+      flags: const YoutubePlayerFlags(
+        autoPlay: false,
+        mute: false,
+        disableDragSeek: false,
+        enableCaption: true,
+      ),
+    );
+    setState(() {});
+  }
+
+  void _initVideoPlayer() {
     _controller = VideoPlayerController.network(widget.videoUrl)
       ..initialize().then((_) {
         setState(() {});
@@ -318,34 +562,10 @@ class _NetworkVideoPlayerState extends State<NetworkVideoPlayer> {
   void _startHideTimer() {
     _hideTimer?.cancel();
     _hideTimer = Timer(const Duration(seconds: 3), () {
-      if (_controller.value.isPlaying) {
+      if (mounted) {
         setState(() => _showControls = false);
       }
     });
-  }
-
-  void _togglePlayPause() {
-    setState(() {
-      if (_controller.value.isPlaying) {
-        _controller.pause();
-        _showControls = true;
-      } else {
-        _controller.play();
-        _startHideTimer();
-      }
-    });
-  }
-
-  void _onTapVideo() {
-    setState(() => _showControls = !_showControls);
-    if (_controller.value.isPlaying && _showControls) {
-      _startHideTimer();
-    }
-  }
-
-  void _seekRelative(Duration offset) {
-    final newPosition = _controller.value.position + offset;
-    _controller.seekTo(newPosition);
   }
 
   void _changePlaybackSpeed() {
@@ -367,7 +587,7 @@ class _NetworkVideoPlayerState extends State<NetworkVideoPlayer> {
             backgroundColor: Colors.black,
             body: SafeArea(
               child: Center(
-                child: NetworkVideoPlayer(videoUrl: widget.videoUrl),
+                child: AdaptiveVideoPlayer(videoUrl: widget.videoUrl),
               ),
             ),
           ),
@@ -375,6 +595,29 @@ class _NetworkVideoPlayerState extends State<NetworkVideoPlayer> {
       );
     } else {
       Navigator.of(context).pop();
+    }
+  }
+
+  void _onTapVideo() {
+    setState(() => _showControls = true);
+    if (!_isYouTube) _startHideTimer();
+  }
+
+  void _togglePlayPause() {
+    if (_isYouTube) {
+      _controller.value.isPlaying ? _controller.pause() : _controller.play();
+    } else {
+      _controller.value.isPlaying ? _controller.pause() : _controller.play();
+    }
+    setState(() {});
+  }
+
+  void _seekRelative(Duration duration) {
+    if (_isYouTube) {
+      final newPosition = _controller.value.position + duration;
+      _controller.seekTo(newPosition);
+    } else {
+      _controller.seekTo(_controller.value.position + duration);
     }
   }
 
@@ -387,111 +630,153 @@ class _NetworkVideoPlayerState extends State<NetworkVideoPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    return _controller.value.isInitialized
-        ? AspectRatio(
-            aspectRatio: _controller.value.aspectRatio,
-            child: GestureDetector(
-              onTap: _onTapVideo,
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  VideoPlayer(_controller),
-
-                  // Center Controls
-                  if (_showControls) ...[
-                    Positioned(
-                      left: 30,
-                      child: IconButton(
-                        icon: const Icon(Icons.replay_10,
-                            size: 40, color: Colors.white),
-                        onPressed: () =>
-                            _seekRelative(const Duration(seconds: -10)),
-                      ),
-                    ),
-                    IconButton(
-                      icon: Icon(
-                        _controller.value.isPlaying
-                            ? Icons.pause_circle
-                            : Icons.play_circle,
-                        size: 64,
-                        color: Colors.white,
-                      ),
-                      onPressed: _togglePlayPause,
-                    ),
-                    Positioned(
-                      right: 30,
-                      child: IconButton(
-                        icon: const Icon(Icons.forward_10,
-                            size: 40, color: Colors.white),
-                        onPressed: () =>
-                            _seekRelative(const Duration(seconds: 10)),
-                      ),
-                    ),
-                  ],
-
-                  // Bottom Controls
-                  if (_showControls)
-                    Positioned(
-                      bottom: 10,
-                      left: 10,
-                      right: 10,
-                      child: Column(
-                        children: [
-                          VideoProgressIndicator(
-                            _controller,
-                            allowScrubbing: true,
-                            colors: const VideoProgressColors(
-                              playedColor: Colors.red,
-                              bufferedColor: Colors.white54,
-                              backgroundColor: Colors.white30,
-                            ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                _formatDuration(_controller.value.position),
-                                style: const TextStyle(color: Colors.white),
-                              ),
-                              Row(
-                                children: [
-                                  // Playback Speed Button
-                                  TextButton(
-                                    onPressed: _changePlaybackSpeed,
-                                    child: Text(
-                                      "${_playbackSpeed}x",
-                                      style: const TextStyle(
-                                          color: Colors.white, fontSize: 14),
-                                    ),
-                                  ),
-                                  // Fullscreen Button
-                                  IconButton(
-                                    icon: const Icon(
-                                      Icons.fullscreen,
-                                      color: Colors.white,
-                                    ),
-                                    onPressed: _toggleFullscreen,
-                                  ),
-                                ],
-                              ),
-                              Text(
-                                _formatDuration(_controller.value.duration),
-                                style: const TextStyle(color: Colors.white),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                    ),
-                ],
-              ),
-            ),
-          )
-        : const SizedBox(
-            height: 200,
-            child: Center(child: CircularProgressIndicator()),
-          );
+    if (_isYouTube) {
+      return _buildYouTubePlayer();
+    } else {
+      return _controller.value.isInitialized
+          ? _buildYouTubePlayer()
+          : const SizedBox(
+              height: 200,
+              child: Center(child: CircularProgressIndicator()),
+            );
+    }
   }
+
+  Widget _buildYouTubePlayer() {
+    return Stack(
+      children: [
+        YoutubePlayer(
+          controller: _controller,
+          showVideoProgressIndicator: true,
+          progressIndicatorColor: Colors.red,
+          onReady: () => setState(() {}),
+          controlsTimeOut: const Duration(seconds: 3),
+          //  Disable native controls
+          bottomActions: [],
+          topActions: [],
+        ),
+        // Your custom controls
+        if (_showControls) ...[
+          Positioned(
+            left: 30,
+            child: IconButton(
+              icon: const Icon(Icons.replay_10, size: 40, color: Colors.white),
+              onPressed: () => _seekRelative(const Duration(seconds: -10)),
+            ),
+          ),
+          Center(
+            child: IconButton(
+              icon: Icon(
+                _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+                size: 64,
+                color: Colors.white,
+              ),
+              onPressed: _togglePlayPause,
+            ),
+          ),
+          Positioned(
+            right: 30,
+            child: IconButton(
+              icon: const Icon(Icons.forward_10, size: 40, color: Colors.white),
+              onPressed: () => _seekRelative(const Duration(seconds: 10)),
+            ),
+          ),
+        ],
+      ],
+    );
+  }
+
+  // Widget _buildVideoPlayer() {
+  //   return AspectRatio(
+  //     aspectRatio: _controller.value.aspectRatio,
+  //     child: GestureDetector(
+  //       onTap: _onTapVideo,
+  //       child: Stack(
+  //         alignment: Alignment.center,
+  //         children: [
+  //           VideoPlayer(_controller),
+  //           if (_showControls) ...[
+  //             Positioned(
+  //               left: 30,
+  //               child: IconButton(
+  //                 icon: const Icon(Icons.replay_10,
+  //                     size: 40, color: Colors.white),
+  //                 onPressed: () => _seekRelative(const Duration(seconds: -10)),
+  //               ),
+  //             ),
+  //             IconButton(
+  //               icon: Icon(
+  //                 _controller.value.isPlaying
+  //                     ? Icons.pause_circle
+  //                     : Icons.play_circle,
+  //                 size: 64,
+  //                 color: Colors.white,
+  //               ),
+  //               onPressed: _togglePlayPause,
+  //             ),
+  //             Positioned(
+  //               right: 30,
+  //               child: IconButton(
+  //                 icon: const Icon(Icons.forward_10,
+  //                     size: 40, color: Colors.white),
+  //                 onPressed: () => _seekRelative(const Duration(seconds: 10)),
+  //               ),
+  //             ),
+  //           ],
+  //           if (_showControls)
+  //             Positioned(
+  //               bottom: 10,
+  //               left: 10,
+  //               right: 10,
+  //               child: Column(
+  //                 children: [
+  //                   VideoProgressIndicator(
+  //                     _controller,
+  //                     allowScrubbing: true,
+  //                     colors: const VideoProgressColors(
+  //                       playedColor: Colors.red,
+  //                       bufferedColor: Colors.white54,
+  //                       backgroundColor: Colors.white30,
+  //                     ),
+  //                   ),
+  //                   Row(
+  //                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //                     children: [
+  //                       Text(
+  //                         _formatDuration(_controller.value.position),
+  //                         style: const TextStyle(color: Colors.white),
+  //                       ),
+  //                       Row(
+  //                         children: [
+  //                           TextButton(
+  //                             onPressed: _changePlaybackSpeed,
+  //                             child: Text(
+  //                               "${_playbackSpeed}x",
+  //                               style: const TextStyle(
+  //                                   color: Colors.white, fontSize: 14),
+  //                             ),
+  //                           ),
+  //                           IconButton(
+  //                             icon: const Icon(Icons.fullscreen,
+  //                                 color: Colors.white),
+  //                             onPressed: _toggleFullscreen,
+  //                           ),
+  //                         ],
+  //                       ),
+  //                       Text(
+  //                         _formatDuration(_controller.value.duration),
+  //                         style: const TextStyle(color: Colors.white),
+  //                       ),
+  //                     ],
+  //                   )
+  //                 ],
+  //               ),
+  //             ),
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 
   String _formatDuration(Duration position) {
     final minutes = position.inMinutes.remainder(60).toString().padLeft(2, '0');
@@ -499,42 +784,3 @@ class _NetworkVideoPlayerState extends State<NetworkVideoPlayer> {
     return "$minutes:$seconds";
   }
 }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return _controller.value.isInitialized
-  //       ? AspectRatio(
-  //           aspectRatio: _controller.value.aspectRatio,
-  //           child: Stack(
-  //             alignment: Alignment.center,
-  //             children: [
-  //               VideoPlayer(_controller),
-  //               if (!_controller.value.isPlaying)
-  //                 IconButton(
-  //                   icon: const Icon(Icons.play_circle,
-  //                       size: 64, color: Colors.white),
-  //                   onPressed: () => _controller.play(),
-  //                 ),
-  //               Positioned(
-  //                 bottom: 10,
-  //                 left: 16,
-  //                 right: 16,
-  //                 child: VideoProgressIndicator(
-  //                   _controller,
-  //                   allowScrubbing: true,
-  //                   colors: VideoProgressColors(
-  //                     playedColor: Colors.red,
-  //                     bufferedColor: Colors.white54,
-  //                     backgroundColor: Colors.white30,
-  //                   ),
-  //                 ),
-  //               ),
-  //             ],
-  //           ),
-  //         )
-  //       : const SizedBox(
-  //           height: 200,
-  //           child: Center(child: CircularProgressIndicator()),
-  //         );
-  // }
-// }

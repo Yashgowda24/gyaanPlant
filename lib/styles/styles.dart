@@ -18,7 +18,7 @@ const TextStyle kHomeCourseStyle = TextStyle(
   fontFamily: 'Gilroy',
   fontSize: 20.0,
   color: Color.fromRGBO(24, 25, 31, 1),
-  fontWeight: FontWeight.w600,
+  fontWeight: FontWeight.w500,
 );
 
 const TextStyle kHomeSubHeadingStyle = TextStyle(

@@ -17,12 +17,6 @@ class MainNavigationState extends State<MainNavigation> {
   int _currentIndex = 0;
   bool showCourseScreen = false;
 
-  // final List<Widget> _screens = [
-  //   HomeScreen(),
-  //   LibraryScreen(),
-  //   Placeholder(), // Example third tab (e.g., Profile)
-  // ];
-
   final List<Widget> _screens = const [
     HomeContent(),
     LibraryScreen(),
@@ -39,7 +33,6 @@ class MainNavigationState extends State<MainNavigation> {
       bottomNavigationBar: showCourseScreen
           ? BottomNavigationBar(
               currentIndex: _currentIndex,
-              unselectedItemColor: const Color.fromRGBO(61, 34, 160, 1),
               items: [
                 _navItem('category.svg', 'sel_category.svg', 'Home'),
                 _navItem('video-play.svg', 'sel_video-play.svg', 'Library'),
@@ -60,7 +53,6 @@ class MainNavigationState extends State<MainNavigation> {
             )
           : BottomNavigationBar(
               currentIndex: _currentIndex,
-              unselectedItemColor: const Color.fromRGBO(61, 34, 160, 1),
               items: [
                 _navItem('category.svg', 'sel_category.svg', 'Home'),
                 _navItem('video-play.svg', 'sel_video-play.svg', 'Library'),
@@ -111,63 +103,3 @@ const _unselectedLabelStyle = TextStyle(
   height: 2,
   fontWeight: FontWeight.w500,
 );
-
-
-// BottomNavigationBar(
-          //   currentIndex: showCourseScreen ? -1 : _currentIndex,
-          //   showUnselectedLabels: true,
-          //   selectedLabelStyle: const TextStyle(
-          //     fontFamily: 'Gilroy',
-          //     fontSize: 11.0,
-          //     color: Color.fromRGBO(61, 34, 160, 1),
-          //     height: 2,
-          //     fontWeight: FontWeight.w600,
-          //   ),
-          //   unselectedLabelStyle: const TextStyle(
-          //     fontFamily: 'Gilroy',
-          //     fontSize: 11.0,
-          //     color: Color.fromRGBO(149, 151, 168, 1),
-          //     height: 2,
-          //     fontWeight: FontWeight.w500,
-          //   ),
-          //   type: BottomNavigationBarType.fixed,
-          //   onTap: (index) {
-          //     setState(() {
-          //       _currentIndex = index;
-          //       showCourseScreen = false; // return to normal tab
-          //     });
-          //   },
-
-          // items: const [
-          //   BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          //   BottomNavigationBarItem(
-          //       icon: Icon(Icons.video_library), label: 'Library'),
-          //   BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-          // ],
-
-          // items: [
-          //   BottomNavigationBarItem(
-          //     icon: SvgPicture.asset('assets/images/navBar/category.svg'),
-          //     activeIcon:
-          //         SvgPicture.asset('assets/images/navBar/sel_category.svg'),
-          //     label: 'Home',
-          //   ),
-          //   BottomNavigationBarItem(
-          //     icon: SvgPicture.asset('assets/images/navBar/video-play.svg'),
-          //     activeIcon:
-          //         SvgPicture.asset('assets/images/navBar/sel_video-play.svg'),
-          //     label: 'Library',
-          //   ),
-          //   BottomNavigationBarItem(
-          //     icon: SvgPicture.asset('assets/images/navBar/book-square.svg'),
-          //     activeIcon:
-          //         SvgPicture.asset('assets/images/navBar/sel_book-square.svg'),
-          //     label: 'Assessment',
-          //   ),
-          //   BottomNavigationBarItem(
-          //     icon: SvgPicture.asset('assets/images/navBar/profile.svg'),
-          //     activeIcon:
-          //         SvgPicture.asset('assets/images/navBar/sel_profile.svg'),
-          //     label: 'Profile',
-          //   ),
-          // ],

@@ -20,6 +20,7 @@ class AssessmetScreen extends StatelessWidget {
             )
           ]),
           child: AppBar(
+            centerTitle: true,
             title: const Text(
               'Assessment',
               style: TextStyle(
@@ -44,20 +45,20 @@ class AssessmetScreen extends StatelessWidget {
             SizedBox(
               height: 35.0,
             ),
-            Text(
+            const Text(
               'Important Points to\n Remember',
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: 'Gilroy',
                 fontSize: 24.0,
                 color: Color.fromRGBO(0, 0, 0, 1),
-                fontWeight: FontWeight.w700,
+                fontWeight: FontWeight.w400,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 35.0,
             ),
-            Column(
+            const Column(
               children: [
                 AssessmentWidget(
                   text: 'Explore Courses -1',
@@ -76,7 +77,7 @@ class AssessmetScreen extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 30.0,
             ),
             GreenButton(
@@ -109,16 +110,16 @@ class AssessmentWidget extends StatelessWidget {
       padding: const EdgeInsets.only(left: 24.0, bottom: 20.0),
       child: Row(
         children: [
-          Icon(
+          const Icon(
             Icons.star_border_rounded,
             color: Color.fromARGB(255, 37, 37, 20),
           ),
-          SizedBox(
+          const SizedBox(
             width: 5,
           ),
           Text(
             text,
-            style: TextStyle(
+            style: const TextStyle(
               fontFamily: 'Gilroy',
               fontSize: 20.0,
               fontWeight: FontWeight.w500,

@@ -51,6 +51,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
             )
           ]),
           child: AppBar(
+            centerTitle: true,
             title: const Text(
               'Profile',
               style: TextStyle(
@@ -302,7 +303,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                   fontSize: 18.0,
                                   color: Colors.black,
                                   fontWeight: showBadges
-                                      ? FontWeight.w600
+                                      ? FontWeight.w500
                                       : FontWeight.w400,
                                 ),
                               ),
@@ -323,7 +324,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                   fontSize: 18.0,
                                   color: Colors.black,
                                   fontWeight: !showBadges
-                                      ? FontWeight.w600
+                                      ? FontWeight.w500
                                       : FontWeight.w400,
                                 ),
                               ),

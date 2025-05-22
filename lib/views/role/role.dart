@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:gyaanplant_learning_app/components/login/login_widget.dart';
 import 'package:gyaanplant_learning_app/views/learning_goals/learning_goals1.dart';
 
@@ -101,12 +100,15 @@ class _RoleSelectorState extends State<RoleSelector> {
           children: [
             Image.asset(imagePath),
             const SizedBox(height: 10),
-            Text(role,
-                style: GoogleFonts.monda(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
-                  color: Color.fromRGBO(0, 0, 0, 1),
-                ))
+            Text(
+              role,
+              style: const TextStyle(
+                fontFamily: 'Gilroy',
+                fontSize: 16.0,
+                color: Color.fromRGBO(0, 0, 0, 1),
+                fontWeight: FontWeight.w500,
+              ),
+            )
           ],
         ),
       ),
