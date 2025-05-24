@@ -75,9 +75,12 @@ class _HomeContentState extends State<HomeContent> {
               alignment: Alignment.center,
               children: [
                 Center(
-                  child: Image.asset(
-                    'assets/images/onboard/GyaanPlant_Latest_Logo_1.png',
-                    height: 60.0,
+                  child: Hero(
+                    tag: 'logo',
+                    child: Image.asset(
+                      'assets/images/onboard/GyaanPlant_Latest_Logo_1.png',
+                      height: 60.0,
+                    ),
                   ),
                 ),
                 Positioned(

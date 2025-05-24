@@ -39,8 +39,11 @@ class AssessmetScreen extends StatelessWidget {
             SizedBox(
               height: 35.0,
             ),
-            Image.asset(
-              'assets/images/onboard/GyaanPlant_Latest_Logo_1.png',
+            Hero(
+              tag: 'logo',
+              child: Image.asset(
+                'assets/images/onboard/GyaanPlant_Latest_Logo_1.png',
+              ),
             ),
             SizedBox(
               height: 35.0,

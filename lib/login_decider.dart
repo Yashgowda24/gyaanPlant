@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gyaanplant_learning_app/shared_preferences/user_shared_preferences.dart';
 import 'package:gyaanplant_learning_app/views/main_navigation.dart';
-import 'package:gyaanplant_learning_app/views/onboarding/onboarding1.dart';
+import 'package:gyaanplant_learning_app/views/onboarding/onboarding.dart';
 
 class RootScreen extends StatelessWidget {
   const RootScreen({super.key});
@@ -23,7 +23,7 @@ class RootScreen extends StatelessWidget {
           );
         } else {
           final isLoggedIn = snapshot.data ?? false;
-          return isLoggedIn ? const MainNavigation() : const OnBoarding1();
+          return isLoggedIn ? const MainNavigation() : const OnBoardingScreen();
         }
       },
     );
