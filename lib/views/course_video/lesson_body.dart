@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:gyaanplant_learning_app/providers/course_provider.dart';
 import 'package:gyaanplant_learning_app/styles/styles.dart';
 import 'package:gyaanplant_learning_app/views/assessmet/assessmet.dart';
@@ -98,7 +97,7 @@ class _LessonBodyWidgetState extends State<LessonBodyWidget> {
     showDialog(
       context: context,
       builder: (_) => CustomPopup(
-        imageAsset: 'assets/images/home/course_completed.png',
+        imageAsset: 'assets/images/home/course_comp-removebg-preview.png',
         title: 'Course Completed',
         subtitle:
             'You have successfully completed your Web Development Course by GyaanPlant',
@@ -115,7 +114,7 @@ class _LessonBodyWidgetState extends State<LessonBodyWidget> {
     showDialog(
       context: context,
       builder: (_) => CustomPopup(
-        imageAsset: 'assets/images/home/5.png',
+        imageAsset: 'assets/images/home/acivement-removebg-preview.png',
         title: 'Achievement Accomplished!',
         subtitle: 'NEW BADGE! Course Completed!',
         buttonText: 'Share',
@@ -137,15 +136,17 @@ class _LessonBodyWidgetState extends State<LessonBodyWidget> {
             Text('+150', style: TextStyle(fontWeight: FontWeight.bold)),
           ],
         ),
-        titleStyle: GoogleFonts.jost(
+        titleStyle: const TextStyle(
+          fontFamily: 'Gilroy',
           fontSize: 22,
-          fontWeight: FontWeight.w600,
           color: Color.fromRGBO(32, 34, 68, 1),
+          fontWeight: FontWeight.w600,
         ),
-        subtitleStyle: GoogleFonts.mulish(
-          fontSize: 13,
-          fontWeight: FontWeight.bold,
-          color: Colors.black87,
+        subtitleStyle: const TextStyle(
+          fontFamily: 'Gilroy',
+          fontSize: 13.03,
+          color: Color.fromRGBO(84, 84, 84, 1),
+          fontWeight: FontWeight.w600,
         ),
         backgroundColor: const Color.fromRGBO(84, 84, 84, 1),
       ),

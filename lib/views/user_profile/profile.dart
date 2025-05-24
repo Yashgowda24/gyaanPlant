@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:gyaanplant_learning_app/shared_preferences/user_shared_preferences.dart';
 import 'package:gyaanplant_learning_app/views/settings/setting_screen.dart';
 
@@ -160,14 +159,22 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("Level 5",
-                              style: TextStyle(fontWeight: FontWeight.w600)),
+                          const Text(
+                            "Level 5",
+                            style: TextStyle(
+                              fontFamily: 'Gilroy',
+                              fontSize: 13.0,
+                              fontWeight: FontWeight.w400,
+                              color: Color.fromRGBO(38, 50, 58, 1),
+                            ),
+                          ),
                           RichText(
-                            text: TextSpan(
+                            text: const TextSpan(
                               children: [
                                 TextSpan(
                                   text: 'EXP ',
-                                  style: GoogleFonts.readexPro(
+                                  style: TextStyle(
+                                    fontFamily: 'Gilroy',
                                     fontSize: 12.0,
                                     fontWeight: FontWeight.w400,
                                     color: Color.fromRGBO(34, 197, 94, 1),
@@ -175,7 +182,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                                 ),
                                 TextSpan(
                                   text: '150 / 5000',
-                                  style: GoogleFonts.readexPro(
+                                  style: TextStyle(
+                                    fontFamily: 'Gilroy',
                                     fontSize: 12.0,
                                     fontWeight: FontWeight.w400,
                                     color: Color.fromRGBO(38, 50, 58, 1),
@@ -399,7 +407,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               children: [
                 Text(
                   value,
-                  style: GoogleFonts.readexPro(
+                  style: const TextStyle(
+                    fontFamily: 'Gilroy',
                     fontSize: 16.0,
                     fontWeight: FontWeight.w500,
                     color: Color.fromRGBO(38, 50, 58, 1),
@@ -407,7 +416,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 ),
                 const SizedBox(height: 2),
                 Text(label,
-                    style: GoogleFonts.readexPro(
+                    style: const TextStyle(
+                      fontFamily: 'Gilroy',
                       fontSize: 12.0,
                       fontWeight: FontWeight.w200,
                       color: Color.fromRGBO(38, 50, 58, 1),
@@ -454,8 +464,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           child: Column(
         children: [
           RichText(
-            text: TextSpan(
-                style: GoogleFonts.rubik(
+            text: const TextSpan(
+                style: TextStyle(
+                  fontFamily: 'Gilroy',
                   fontSize: 20.0,
                   color: Color.fromRGBO(12, 9, 42, 1),
                   fontWeight: FontWeight.w500,
@@ -463,8 +474,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                 children: [
                   TextSpan(text: 'You have played a total\n'),
                   TextSpan(
-                    text: '24 quizzes',
+                    text: '  24 quizzes',
                     style: TextStyle(
+                      fontFamily: 'Gilroy',
                       color: Color.fromRGBO(61, 123, 68, 1),
                     ),
                   ),
@@ -493,9 +505,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
+                          const Text(
                             '5',
-                            style: GoogleFonts.rubik(
+                            style: TextStyle(
+                              fontFamily: 'Gilroy',
                               fontSize: 32.0,
                               color: Color.fromRGBO(12, 9, 42, 1),
                               fontWeight: FontWeight.w700,
@@ -504,9 +517,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           Image.asset('assets/images/home/pen.png'),
                         ],
                       ),
-                      Text(
+                      const Text(
                         'Courses Completed',
-                        style: GoogleFonts.rubik(
+                        style: TextStyle(
+                          fontFamily: 'Gilroy',
                           fontSize: 14.0,
                           color: Color.fromRGBO(12, 9, 42, 1),
                           fontWeight: FontWeight.w400,
@@ -532,9 +546,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
+                          const Text(
                             '21',
-                            style: GoogleFonts.rubik(
+                            style: TextStyle(
+                              fontFamily: 'Gilroy',
                               fontSize: 32.0,
                               color: Color.fromRGBO(255, 255, 255, 1),
                               fontWeight: FontWeight.w700,
@@ -543,9 +558,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           Image.asset('assets/images/home/badge.png'),
                         ],
                       ),
-                      Text(
+                      const Text(
                         'Quiz won',
-                        style: GoogleFonts.rubik(
+                        style: TextStyle(
+                          fontFamily: 'Gilroy',
                           fontSize: 14.0,
                           color: Color.fromRGBO(255, 255, 255, 1),
                           fontWeight: FontWeight.w400,

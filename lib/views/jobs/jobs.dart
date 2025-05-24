@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:gyaanplant_learning_app/providers/course_provider.dart';
 import 'package:gyaanplant_learning_app/styles/styles.dart';
+import 'package:gyaanplant_learning_app/views/jobs/animations/jobs_shimmer.dart';
 import 'package:gyaanplant_learning_app/views/course_video/lesson_body.dart';
 import 'package:gyaanplant_learning_app/views/home/home.dart';
 import 'package:provider/provider.dart';
 
-class MyCourse extends StatefulWidget {
-  const MyCourse({super.key});
+class JobsScreen extends StatefulWidget {
+  const JobsScreen({super.key});
 
   @override
-  State<MyCourse> createState() => _MyCourseState();
+  State<JobsScreen> createState() => _JobsScreenState();
 }
 
-class _MyCourseState extends State<MyCourse> {
+class _JobsScreenState extends State<JobsScreen> {
   @override
   void initState() {
     super.initState();
@@ -27,9 +27,7 @@ class _MyCourseState extends State<MyCourse> {
     final _courseProvider = Provider.of<CourseProvider>(context);
 
     if (_courseProvider.isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
+      return MyCourseShimmerAnimation.buildShimmerLoading(context);
     }
     final _courses = _courseProvider.courses;
 
@@ -59,11 +57,14 @@ class _MyCourseState extends State<MyCourse> {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(top: 15.0, left: 15.0, right: 15.0),
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 20.0, right: 20.0),
           child: Column(
             children: [
+              SizedBox(
+                height: 20.0,
+              ),
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
@@ -87,23 +88,26 @@ class _MyCourseState extends State<MyCourse> {
                     Row(
                       children: [
                         RichText(
-                          text: TextSpan(
+                          text: const TextSpan(
                             children: [
                               TextSpan(
                                 text: 'Course Completed - ',
-                                style: GoogleFonts.poppins(
-                                  fontSize: 12.0,
+                                style: TextStyle(
+                                  fontFamily: 'Gilroy',
+                                  fontSize: 13,
                                   color: Color.fromRGBO(133, 133, 151, 1),
                                   fontWeight: FontWeight.w400,
                                 ),
                               ),
                               TextSpan(
-                                  text: 'Web Development',
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 12.0,
-                                    fontWeight: FontWeight.w600,
-                                    color: Color.fromRGBO(0, 0, 0, 1),
-                                  ))
+                                text: 'Web Development',
+                                style: TextStyle(
+                                  fontFamily: 'Gilroy',
+                                  fontSize: 13,
+                                  color: Color.fromRGBO(0, 0, 0, 1),
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              )
                             ],
                           ),
                         )
@@ -111,9 +115,10 @@ class _MyCourseState extends State<MyCourse> {
                     ),
                     const SizedBox(height: 8),
                     RichText(
-                      text: TextSpan(
+                      text: const TextSpan(
                         text: '46min',
-                        style: GoogleFonts.poppins(
+                        style: TextStyle(
+                          fontFamily: 'Gilroy',
                           fontSize: 20.0,
                           color: Color.fromRGBO(31, 31, 57, 1),
                           fontWeight: FontWeight.w700,
@@ -121,7 +126,8 @@ class _MyCourseState extends State<MyCourse> {
                         children: [
                           TextSpan(
                             text: ' / 60min',
-                            style: GoogleFonts.poppins(
+                            style: TextStyle(
+                              fontFamily: 'Gilroy',
                               fontSize: 12.0,
                               color: Color.fromRGBO(133, 133, 151, 1),
                               fontWeight: FontWeight.w400,
@@ -159,95 +165,88 @@ class _MyCourseState extends State<MyCourse> {
                   ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(
-                      height: 20.0,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    height: 20.0,
+                  ),
+                  const Padding(
+                    padding: const EdgeInsets.only(left: 8.0),
+                    child: Text(
+                      'My Courses',
+                      style: kHomeCourseStyle,
                     ),
-                    const Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: Text(
-                        'My courses',
-                        style: kHomeCourseStyle,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      LessonCard(
+                        isMyCourseScreen: true,
+                        progressText: '16/21',
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LessonBody()),
+                          );
+                        },
+                        image: _courses[0].thumbnail,
+                        title: _courses[0].title,
                       ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        LessonCard(
-                          isMyCourseScreen: true,
-                          progressText: '16/21',
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => LessonBody()
-                              ),
-                            );
-                          },
-                          image: _courses[0].thumbnail,
-                          title: _courses[0].title,
-                        ),
-                        SizedBox(
-                          width: 8.0,
-                        ),
-                        LessonCard(
-                          isMyCourseScreen: true,
-                          progressText: '16/21',
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => LessonBody()
-                              ),
-                            );
-                          },
-                          image: _courses[1].thumbnail,
-                          title: _courses[1].title,
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        LessonCard(
-                          isMyCourseScreen: true,
-                          progressText: '16/21',
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => LessonBody()
-                              ),
-                            );
-                          },
-                          image: _courses[2].thumbnail,
-                          title: _courses[2].title,
-                        ),
-                        SizedBox(
-                          width: 8.0,
-                        ),
-                        LessonCard(
-                          isMyCourseScreen: true,
-                          progressText: '16/21',
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => LessonBody()
-                              ),
-                            );
-                          },
-                          image: _courses[0].thumbnail,
-                          title: _courses[0].title,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                      SizedBox(
+                        width: 8.0,
+                      ),
+                      LessonCard(
+                        isMyCourseScreen: true,
+                        progressText: '16/21',
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LessonBody()),
+                          );
+                        },
+                        image: _courses[1].thumbnail,
+                        title: _courses[1].title,
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      LessonCard(
+                        isMyCourseScreen: true,
+                        progressText: '16/21',
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LessonBody()),
+                          );
+                        },
+                        image: _courses[2].thumbnail,
+                        title: _courses[2].title,
+                      ),
+                      SizedBox(
+                        width: 8.0,
+                      ),
+                      LessonCard(
+                        isMyCourseScreen: true,
+                        progressText: '16/21',
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LessonBody()),
+                          );
+                        },
+                        image: _courses[0].thumbnail,
+                        title: _courses[0].title,
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ],
           ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gyaanplant_learning_app/model/get_category.dart';
 import 'package:gyaanplant_learning_app/urls/url.dart';
+import 'package:gyaanplant_learning_app/views/assessmet/animation/sel_assessment_shimmer.dart';
 import 'package:gyaanplant_learning_app/views/assessmet/mcq/mcq_screen.dart';
 
 class SelectAssessmentCategory extends StatefulWidget {
@@ -62,9 +63,7 @@ class _SelectAssessmentCategoryState extends State<SelectAssessmentCategory> {
         ),
       ),
       body: _isLoading
-          ? const Center(
-              child: CircularProgressIndicator(),
-            )
+          ? const SelectCourseShimmer()
           : Column(
               children: [
                 const SizedBox(
@@ -161,7 +160,7 @@ class SelectCourse extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double imageWidth = MediaQuery.of(context).size.width * 0.35;
-    final double imageHeight = 160;
+    const double imageHeight = 160;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,

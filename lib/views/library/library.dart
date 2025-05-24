@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gyaanplant_learning_app/providers/course_provider.dart';
 import 'package:gyaanplant_learning_app/views/course_video/lesson_body.dart';
 import 'package:gyaanplant_learning_app/views/home/home.dart';
+import 'package:gyaanplant_learning_app/views/library/lib_animation/lib_anim.dart';
 import 'package:provider/provider.dart';
 
 class LibraryScreen extends StatefulWidget {
@@ -15,9 +16,21 @@ class _LibraryScreenState extends State<LibraryScreen> {
   bool showMoreRecommended = false;
 
   @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Provider.of<CourseProvider>(context, listen: false).fetchCourses();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     final courseProvider = Provider.of<CourseProvider>(context);
     final courses = courseProvider.courses;
+    if (courseProvider.isLoading) {
+      return LibraryShimmerAnimation.buildShimmerLoading(context);
+    }
 
     return Scaffold(
       appBar: PreferredSize(
@@ -47,30 +60,33 @@ class _LibraryScreenState extends State<LibraryScreen> {
       ),
       body: SingleChildScrollView(
         padding:
-            EdgeInsets.only(top: 30.0, left: 20.0, right: 20.0, bottom: 20.0),
+            EdgeInsets.only(top: 30.0, left: 0.0, right: 0.0, bottom: 20.0),
         child: Column(
           children: [
-            TextField(
-              decoration: InputDecoration(
-                hintText: 'Search videos',
-                hintStyle: const TextStyle(
-                  fontFamily: 'Gilroy',
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                  color: Color.fromRGBO(138, 140, 148, 1),
-                ),
-                filled: true,
-                suffixIcon: Padding(
-                  padding: const EdgeInsets.only(right: 10.0),
-                  child: Image.asset('assets/images/home/search-normal.png'),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide.none, // No border line
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  borderSide: BorderSide(color: Colors.grey.shade400),
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0, right: 20),
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: 'Search videos',
+                  hintStyle: const TextStyle(
+                    fontFamily: 'Gilroy',
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                    color: Color.fromRGBO(138, 140, 148, 1),
+                  ),
+                  filled: true,
+                  suffixIcon: Padding(
+                    padding: const EdgeInsets.only(right: 10.0),
+                    child: Image.asset('assets/images/home/search-normal.png'),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide.none, // No border line
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide(color: Colors.grey.shade400),
+                  ),
                 ),
               ),
             ),

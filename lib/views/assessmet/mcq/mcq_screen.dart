@@ -172,7 +172,6 @@
 // }
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:gyaanplant_learning_app/components/login/green_button.dart';
 import 'package:gyaanplant_learning_app/model/mcqs.dart';
 import 'package:gyaanplant_learning_app/urls/url.dart';
@@ -274,18 +273,19 @@ class _MCQAssessmentState extends State<MCQAssessment> {
                               selectedIndex = -1;
                             });
                           },
-                          child: Row(
+                          child: const Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              const Icon(Icons.arrow_back_ios_new,
+                              Icon(Icons.arrow_back_ios_new,
                                   size: 14,
                                   color: Color.fromRGBO(118, 118, 118, 1)),
-                              const SizedBox(width: 4),
+                              SizedBox(width: 4),
                               Text(
                                 'Previous',
-                                style: GoogleFonts.baloo2(
+                                style: TextStyle(
+                                  fontFamily: 'Gilroy',
                                   fontSize: 14.0,
-                                  color: const Color.fromRGBO(118, 118, 118, 1),
+                                  color: Color.fromRGBO(118, 118, 118, 1),
                                 ),
                               ),
                             ],

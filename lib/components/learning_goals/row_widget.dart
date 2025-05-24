@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class LearningGoalsRowWidget extends StatelessWidget {
   final Image image1;
@@ -58,10 +57,11 @@ class LearningGoalsRowWidget extends StatelessWidget {
                   ),
                   Text(
                     text1,
-                    style: GoogleFonts.monda(
+                    style: const TextStyle(
+                      fontFamily: 'Gilroy',
                       fontSize: 14.0,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.black,
+                      color: Color.fromRGBO(0, 0, 0, 1),
+                      fontWeight: FontWeight.w500,
                     ),
                   )
                 ],
@@ -101,10 +101,11 @@ class LearningGoalsRowWidget extends StatelessWidget {
                   ),
                   Text(
                     text2,
-                    style: GoogleFonts.monda(
+                    style: const TextStyle(
+                      fontFamily: 'Gilroy',
                       fontSize: 14.0,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.black,
+                      color: Color.fromRGBO(0, 0, 0, 1),
+                      fontWeight: FontWeight.w500,
                     ),
                   )
                 ],

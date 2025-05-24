@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:gyaanplant_learning_app/providers/course_provider.dart';
 import 'package:gyaanplant_learning_app/styles/styles.dart';
 import 'package:gyaanplant_learning_app/views/assessmet/assessmet.dart';
 import 'package:gyaanplant_learning_app/views/course_video/lesson_body.dart';
 import 'package:gyaanplant_learning_app/views/home/animations/course_animation.dart';
+import 'package:gyaanplant_learning_app/views/home/animations/home_shimmer_ani.dart';
 import 'package:gyaanplant_learning_app/views/home/animations/navigation_animation.dart';
 import 'package:gyaanplant_learning_app/views/home/animations/notification_animation.dart';
 import 'package:gyaanplant_learning_app/views/library/library.dart';
 import 'package:gyaanplant_learning_app/views/main_navigation.dart';
 import 'package:gyaanplant_learning_app/views/user_profile/profile.dart';
 import 'package:provider/provider.dart';
-import 'package:shimmer/shimmer.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -60,14 +59,14 @@ class _HomeContentState extends State<HomeContent> {
     final courseProvider = Provider.of<CourseProvider>(context);
 
     if (courseProvider.isLoading) {
-      return _buildShimmerLoading();
+      return HomeShimmerAnimation.buildShimmerLoading(context);
     }
     final courses = courseProvider.courses;
     return SingleChildScrollView(
-      padding: const EdgeInsets.only(
-          top: 30.0, left: 16.0, right: 16.0, bottom: 20.0),
+      padding:
+          const EdgeInsets.only(top: 30.0, left: 0.0, right: 0.0, bottom: 20.0),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        // crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
             padding:
@@ -183,158 +182,6 @@ class _HomeContentState extends State<HomeContent> {
       ),
     );
   }
-
-  Widget _buildShimmerLoading() {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.only(
-          top: 30.0, left: 16.0, right: 16.0, bottom: 20.0),
-      child: Shimmer.fromColors(
-        baseColor: Colors.grey[300]!,
-        highlightColor: Colors.grey[100]!,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Logo and notification icon placeholder
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 20.0),
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  Center(
-                    child: Container(
-                      width: 120,
-                      height: 60,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Positioned(
-                    right: 0,
-                    child: Container(
-                      width: 24,
-                      height: 24,
-                      color: Colors.white,
-                    ),
-                  )
-                ],
-              ),
-            ),
-
-            // Learning progress card placeholder
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 10),
-                  Row(
-                    children: [
-                      Container(
-                        width: 100,
-                        height: 16,
-                        color: Colors.white,
-                      ),
-                      const Spacer(),
-                      Container(
-                        width: 80,
-                        height: 16,
-                        color: Colors.white,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Container(
-                    width: 150,
-                    height: 24,
-                    color: Colors.white,
-                  ),
-                  const SizedBox(height: 20),
-                  Container(
-                    height: 6,
-                    width: double.infinity,
-                    color: Colors.white,
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 20),
-
-            // Course sections placeholders
-            ...List.generate(3, (index) => _buildShimmerCourseSection()),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildShimmerCourseSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: 20),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              width: 80,
-              height: 20,
-              color: Colors.white,
-            ),
-            Container(
-              width: 70,
-              height: 16,
-              color: Colors.white,
-            ),
-          ],
-        ),
-        const SizedBox(height: 10),
-        Row(
-          children: [
-            _buildShimmerLessonCard(),
-            const SizedBox(width: 10),
-            _buildShimmerLessonCard(),
-          ],
-        ),
-        const SizedBox(height: 20),
-      ],
-    );
-  }
-
-  Widget _buildShimmerLessonCard() {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.42,
-      margin: const EdgeInsets.symmetric(vertical: 10.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            height: 120,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8),
-            ),
-          ),
-          const SizedBox(height: 8),
-          Container(
-            width: double.infinity,
-            height: 16,
-            color: Colors.white,
-          ),
-          const SizedBox(height: 4),
-          Container(
-            width: 100,
-            height: 14,
-            color: Colors.white,
-          ),
-        ],
-      ),
-    );
-  }
 }
 
 class CourseSection extends StatefulWidget {
@@ -364,43 +211,49 @@ class _CourseSectionState extends State<CourseSection> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: 20),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              widget.title,
-              style: kHomeCourseStyle,
-            ),
-            // if (widget.onSeeMorePressed != null)
-            //   GestureDetector(
-            //     onTap: widget.onSeeMorePressed,
-            //     child: Text(
-            //       widget.isSeeMoreExpanded ? 'SEE LESS' : 'SEE MORE',
-            //       style: kSeeMoreStyle,
-            //     ),
-            //   )
-            /// 👇 This block handles SEE MORE text
-            if (widget.showSeeMore)
-              GestureDetector(
-                onTap: widget.isInteractive ? widget.onSeeMorePressed : null,
-                child: Text(
-                  widget.isSeeMoreExpanded ? 'SEE LESS' : 'SEE MORE',
-                  style: kSeeMoreStyle,
-                ),
+    return Padding(
+      padding: const EdgeInsets.only(left: 20.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                widget.title,
+                style: kHomeCourseStyle,
               ),
-          ],
-        ),
-        const SizedBox(height: 10),
-        Wrap(
-          spacing: 10,
-          runSpacing: 10,
-          children: widget.lessons,
-        ),
-      ],
+              // if (widget.onSeeMorePressed != null)
+              //   GestureDetector(
+              //     onTap: widget.onSeeMorePressed,
+              //     child: Text(
+              //       widget.isSeeMoreExpanded ? 'SEE LESS' : 'SEE MORE',
+              //       style: kSeeMoreStyle,
+              //     ),
+              //   )
+              /// 👇 This block handles SEE MORE text
+              if (widget.showSeeMore)
+                GestureDetector(
+                  onTap: widget.isInteractive ? widget.onSeeMorePressed : null,
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 25.0),
+                    child: Text(
+                      widget.isSeeMoreExpanded ? 'SEE LESS' : 'SEE MORE',
+                      style: kSeeMoreStyle,
+                    ),
+                  ),
+                ),
+            ],
+          ),
+          const SizedBox(height: 10),
+          Wrap(
+            spacing: 20,
+            runSpacing: 10,
+            children: widget.lessons,
+          ),
+        ],
+      ),
     );
   }
 }
@@ -532,100 +385,112 @@ class LearningProgressCard extends StatelessWidget {
     double totalMinutes = 60;
     double progress = learnedMinutes / totalMinutes;
 
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: const [
-          BoxShadow(
-            color: Color.fromRGBO(184, 184, 210, 0.2),
-            blurRadius: 12,
-            spreadRadius: 0,
-            offset: const Offset(0, 8),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          SizedBox(
-            height: 10,
-          ),
-          Row(
-            children: [
-              Text(
-                "Web Development",
-                style: GoogleFonts.poppins(
-                  fontSize: 12.0,
-                  color: Color.fromRGBO(0, 0, 0, 1),
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              Spacer(),
-              GestureDetector(
-                onTap: () {
-                  (context.findAncestorStateOfType<MainNavigationState>())
-                      ?.openCourseScreen();
-                },
-                child: Text(
-                  "MY COURSES",
+    return Padding(
+      padding: const EdgeInsets.only(left: 20.0, right: 20),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: const [
+            BoxShadow(
+              color: Color.fromRGBO(184, 184, 210, 0.2),
+              blurRadius: 12,
+              spreadRadius: 0,
+              offset: const Offset(0, 8),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 10,
+            ),
+            Row(
+              children: [
+                const Text(
+                  "Web Development",
                   style: TextStyle(
                     fontFamily: 'Gilroy',
-                    fontSize: 12.0,
-                    color: Color.fromRGBO(0, 31, 142, 1),
+                    fontSize: 13,
+                    color: Color.fromRGBO(0, 0, 0, 1),
                     fontWeight: FontWeight.w400,
                   ),
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          RichText(
-            text: TextSpan(
-              text: '${learnedMinutes.toInt()}min',
-              style: GoogleFonts.poppins(
-                fontSize: 20,
-                fontWeight: FontWeight.w700,
-                color: Color.fromRGBO(31, 31, 57, 1),
-              ),
-              children: [
-                TextSpan(
-                  text: ' / ${totalMinutes.toInt()}min',
-                  style: GoogleFonts.poppins(
-                    fontSize: 10,
-                    color: Color.fromRGBO(133, 133, 151, 1),
-                    fontWeight: FontWeight.normal,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 12),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Stack(
-              children: [
-                Container(
-                  height: 6,
-                  color: Colors.grey.shade200,
-                ),
-                Container(
-                  height: 6,
-                  width: MediaQuery.of(context).size.width * 0.7 * progress,
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Color.fromRGBO(255, 255, 255, 0),
-                        Color.fromRGBO(61, 123, 68, 1),
-                      ],
+                Spacer(),
+                GestureDetector(
+                  onTap: () {
+                    // Get the MainNavigationState and change to Jobs tab (index 3)
+                    final navState =
+                        context.findAncestorStateOfType<MainNavigationState>();
+                    if (navState != null) {
+                      navState.changeTab(3);
+                    }
+                    // (context.findAncestorStateOfType<MainNavigationState>())
+                    //     ?.openCourseScreen();
+                  },
+                  child: const Text(
+                    "MY COURSES",
+                    style: TextStyle(
+                      fontFamily: 'Gilroy',
+                      fontSize: 12.0,
+                      color: Color.fromRGBO(0, 31, 142, 1),
+                      fontWeight: FontWeight.w400,
                     ),
                   ),
                 ),
               ],
             ),
-          ),
-        ],
+            const SizedBox(height: 8),
+            RichText(
+              text: TextSpan(
+                text: '${learnedMinutes.toInt()}min',
+                style: const TextStyle(
+                  fontFamily: 'Gilroy',
+                  fontSize: 20.0,
+                  color: Color.fromRGBO(31, 31, 57, 1),
+                  fontWeight: FontWeight.w700,
+                ),
+                children: [
+                  TextSpan(
+                    text: ' / ${totalMinutes.toInt()}min',
+                    style: const TextStyle(
+                      fontFamily: 'Gilroy',
+                      fontSize: 10.0,
+                      color: Color.fromRGBO(133, 133, 151, 1),
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 12),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Stack(
+                children: [
+                  Container(
+                    height: 6,
+                    color: Colors.grey.shade200,
+                  ),
+                  Container(
+                    height: 6,
+                    width: MediaQuery.of(context).size.width * 0.7 * progress,
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Color.fromRGBO(255, 255, 255, 0),
+                          Color.fromRGBO(61, 123, 68, 1),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

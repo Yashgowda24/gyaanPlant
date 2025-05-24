@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:gyaanplant_learning_app/components/login/green_button.dart';
 import 'package:gyaanplant_learning_app/styles/styles.dart';
 
@@ -77,10 +76,11 @@ class _LoginWidgetState extends State<LoginWidget> {
                     fieldWidth: 60,
                     autoFocus: false,
                     filled: true,
-                    textStyle: GoogleFonts.poppins(
+                    textStyle: const TextStyle(
+                      fontFamily: 'Gilroy',
                       fontSize: 22.0,
-                      fontWeight: FontWeight.w600,
-                      color: const Color.fromRGBO(33, 33, 33, 1),
+                      color: Color.fromRGBO(33, 33, 33, 1),
+                      fontWeight: FontWeight.w500,
                     ),
                     fillColor: Colors.white,
                     onSubmit: widget.onOtpSubmit,
@@ -94,10 +94,11 @@ class _LoginWidgetState extends State<LoginWidget> {
                       decoration: InputDecoration(
                         hintText: widget.hintText,
                         errorText: widget.errorText,
-                        hintStyle: GoogleFonts.poppins(
+                        hintStyle: const TextStyle(
+                          fontFamily: 'Gilroy',
                           fontSize: 16.0,
-                          fontWeight: FontWeight.w600,
-                          color: const Color.fromRGBO(33, 33, 33, 1),
+                          color: Color.fromRGBO(33, 33, 33, 1),
+                          fontWeight: FontWeight.w500,
                         ),
                         filled: true,
                         fillColor: Colors.white,
@@ -117,9 +118,11 @@ class _LoginWidgetState extends State<LoginWidget> {
                         errorBorder: InputBorder.none,
                         focusedErrorBorder: InputBorder.none,
                       ),
-                      style: GoogleFonts.poppins(
+                      style: const TextStyle(
+                        fontFamily: 'Gilroy',
                         fontSize: 16.0,
-                        fontWeight: FontWeight.w600,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
                       ),
                       keyboardType: TextInputType.phone,
                     ),

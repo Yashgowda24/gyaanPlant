@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:gyaanplant_learning_app/components/login/login_widget.dart';
 import 'package:gyaanplant_learning_app/views/learning_goals/learning_goals2.dart';
 
@@ -16,7 +15,7 @@ class LearningGoals1 extends StatelessWidget {
         heading: 'Learning Goals',
         subText: 'Choose your learning goals to continue',
         buttonText: 'Continue',
-        hintText: 'Enter your number',
+        hintText: '',
         isOtpField: false,
         showTextField: false,
         showButton: true,
@@ -97,9 +96,10 @@ class _LearningGoalsWidgetState extends State<LearningGoalsWidget> {
                   const SizedBox(width: 16),
                   Expanded(
                     child: Text(goal["title"],
-                        style: GoogleFonts.monda(
+                        style: const TextStyle(
+                          fontFamily: 'Gilroy',
                           fontSize: 16.0,
-                          fontWeight: FontWeight.w700,
+                          fontWeight: FontWeight.w500,
                           color: Colors.black,
                         )),
                   ),

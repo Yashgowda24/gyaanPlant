@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class CustomPopup extends StatelessWidget {
   final String imageAsset;
@@ -35,16 +34,17 @@ class CustomPopup extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const SizedBox(height: 40),
+            const SizedBox(height: 0),
             Image.asset(imageAsset),
             const SizedBox(height: 30),
             Text(
               title,
               style: titleStyle ??
-                  GoogleFonts.jost(
-                    fontSize: 22.0,
-                    fontWeight: FontWeight.w600,
+                  const TextStyle(
+                    fontFamily: 'Gilroy',
+                    fontSize: 22.33,
                     color: Color.fromRGBO(32, 34, 68, 1),
+                    fontWeight: FontWeight.w600,
                   ),
               textAlign: TextAlign.center,
             ),
@@ -52,10 +52,11 @@ class CustomPopup extends StatelessWidget {
             Text(
               subtitle,
               style: subtitleStyle ??
-                  GoogleFonts.mulish(
+                  const TextStyle(
+                    fontFamily: 'Gilroy',
                     fontSize: 13.03,
                     color: Color.fromRGBO(84, 84, 84, 1),
-                    fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.w600,
                   ),
               textAlign: TextAlign.center,
             ),
