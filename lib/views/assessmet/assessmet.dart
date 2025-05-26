@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gyaanplant_learning_app/components/login/green_button.dart';
+import 'package:gyaanplant_learning_app/page_transition/page_transition.dart';
 import 'package:gyaanplant_learning_app/views/assessmet/select_assessment.dart';
 
 class AssessmetScreen extends StatelessWidget {
@@ -86,12 +87,8 @@ class AssessmetScreen extends StatelessWidget {
             GreenButton(
                 text: 'Start the Test',
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SelectAssessmentCategory(),
-                    ),
-                  );
+                  Navigator.push(context,
+                      SlideLeftRoute(page: SelectAssessmentCategory()));
                 }),
           ],
         ),

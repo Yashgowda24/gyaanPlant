@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gyaanplant_learning_app/components/learning_goals/row_widget.dart';
 import 'package:gyaanplant_learning_app/components/learning_goals/text_subText_widget.dart';
 import 'package:gyaanplant_learning_app/components/login/green_button.dart';
+import 'package:gyaanplant_learning_app/page_transition/page_transition.dart';
 import 'package:gyaanplant_learning_app/views/fill_profile_screen/fill_profile.dart';
 
 class LearningGoals2 extends StatefulWidget {
@@ -69,11 +70,11 @@ class _LearningGoals2State extends State<LearningGoals2> {
                 text: 'Continue',
                 onPressed: () {
                   Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => FillProfileScreen(),
-                    ),
-                  );
+                      context,
+                      // MaterialPageRoute(
+                      //   builder: (context) => FillProfileScreen(),
+                      // ),
+                      SlideLeftRoute(page: FillProfileScreen()));
                 },
               ),
               SizedBox(

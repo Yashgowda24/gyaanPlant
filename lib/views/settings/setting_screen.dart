@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gyaanplant_learning_app/page_transition/page_transition.dart';
 import 'package:gyaanplant_learning_app/shared_preferences/user_shared_preferences.dart';
 import 'package:gyaanplant_learning_app/styles/styles.dart';
 import 'package:gyaanplant_learning_app/views/login/login.dart';
@@ -54,12 +55,8 @@ class SettingScreen extends StatelessWidget {
                   icon: CupertinoIcons.person_circle,
                   text: 'My profile',
                   onPressed: () async {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => UserProfileSettingScreen(),
-                      ),
-                    );
+                    Navigator.push(context,
+                        SlideLeftRoute(page: UserProfileSettingScreen()));
                   },
                 ),
                 SettingDisplayWidget(
@@ -68,8 +65,8 @@ class SettingScreen extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => MyCertificateScreen(),
+                      SlideLeftRoute(
+                        page: MyCertificateScreen(),
                       ),
                     );
                   },
@@ -80,8 +77,8 @@ class SettingScreen extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => LeaderboardScreen(),
+                      SlideLeftRoute(
+                        page: LeaderboardScreen(),
                       ),
                     );
                   },
@@ -92,10 +89,8 @@ class SettingScreen extends StatelessWidget {
                   onPressed: () async {
                     await UserPreferences.resetLoggedIn();
                     print('Cleared User data successfully');
-                    Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(builder: (context) => LoginScreen()),
-                        (route) => false);
+                    Navigator.pushAndRemoveUntil(context,
+                        SlideLeftRoute(page: LoginScreen()), (route) => false);
                   },
                 ),
               ],

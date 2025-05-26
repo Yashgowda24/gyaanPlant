@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gyaanplant_learning_app/components/login/login_widget.dart';
+import 'package:gyaanplant_learning_app/page_transition/page_transition.dart';
 import 'package:gyaanplant_learning_app/views/learning_goals/learning_goals2.dart';
 
 class LearningGoals1 extends StatelessWidget {
@@ -22,11 +23,11 @@ class LearningGoals1 extends StatelessWidget {
         customChild: LearningGoalsWidget(),
         onPressed: () {
           Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => LearningGoals2(),
-            ),
-          );
+              context,
+              // MaterialPageRoute(
+              //   builder: (context) => LearningGoals2(),
+              // ),
+              SlideLeftRoute(page: LearningGoals2()));
         },
       ),
     );

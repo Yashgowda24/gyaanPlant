@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gyaanplant_learning_app/components/learning_goals/text_subText_widget.dart';
 import 'package:gyaanplant_learning_app/components/login/green_button.dart';
+import 'package:gyaanplant_learning_app/page_transition/page_transition.dart';
 import 'package:gyaanplant_learning_app/urls/url.dart';
 import 'package:gyaanplant_learning_app/views/main_navigation.dart';
 
@@ -56,10 +57,13 @@ class FillProfileScreen extends StatelessWidget {
                     print(success);
                     if (success) {
                       Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) => const MainNavigation()),
-                      );
+                          context,
+                          // MaterialPageRoute(
+                          //   builder: (_) => const MainNavigation(),
+                          // ),
+                          SlideLeftRoute(
+                            page: MainNavigation(),
+                          ));
                     } else {
                       print('Profile failed!');
                     }

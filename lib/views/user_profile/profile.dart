@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gyaanplant_learning_app/page_transition/page_transition.dart';
 import 'package:gyaanplant_learning_app/shared_preferences/user_shared_preferences.dart';
 import 'package:gyaanplant_learning_app/views/settings/setting_screen.dart';
 
@@ -69,11 +70,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   ),
                   onPressed: () {
                     Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SettingScreen(),
-                      ),
-                    );
+                        context, SlideLeftRoute(page: SettingScreen()));
                   },
                 ),
               )

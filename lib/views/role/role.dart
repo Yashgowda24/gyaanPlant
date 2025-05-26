@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gyaanplant_learning_app/components/login/login_widget.dart';
+import 'package:gyaanplant_learning_app/page_transition/page_transition.dart';
 import 'package:gyaanplant_learning_app/views/learning_goals/learning_goals1.dart';
 
 class ChooseRole extends StatefulWidget {
@@ -12,12 +13,13 @@ class ChooseRole extends StatefulWidget {
 class _ChooseRoleState extends State<ChooseRole> {
   void navigateToNext(BuildContext context, String role) {
     // You can customize this to navigate to different screens
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => LearningGoals1(),
-      ),
-    );
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (context) => LearningGoals1(),
+    //   ),
+    // );
+    Navigator.push(context, SlideLeftRoute(page: const LearningGoals1()));
   }
 
   @override

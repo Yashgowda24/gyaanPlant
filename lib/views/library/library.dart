@@ -36,14 +36,16 @@ class _LibraryScreenState extends State<LibraryScreen> {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(kToolbarHeight),
         child: Container(
-          decoration: BoxDecoration(boxShadow: [
-            BoxShadow(
-              blurRadius: 15.0,
-              spreadRadius: 0,
-              offset: Offset(0, 0),
-              color: Color.fromRGBO(179, 32, 115, 0.18),
-            )
-          ]),
+          decoration: const BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                blurRadius: 15.0,
+                spreadRadius: 0,
+                offset: Offset(0, 0),
+                color: Color.fromRGBO(179, 32, 115, 0.18),
+              )
+            ],
+          ),
           child: AppBar(
             centerTitle: true,
             title: const Text(
@@ -59,8 +61,8 @@ class _LibraryScreenState extends State<LibraryScreen> {
         ),
       ),
       body: SingleChildScrollView(
-        padding:
-            EdgeInsets.only(top: 30.0, left: 0.0, right: 0.0, bottom: 20.0),
+        padding: const EdgeInsets.only(
+            top: 30.0, left: 0.0, right: 0.0, bottom: 20.0),
         child: Column(
           children: [
             Padding(
@@ -90,7 +92,7 @@ class _LibraryScreenState extends State<LibraryScreen> {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10.0,
             ),
 

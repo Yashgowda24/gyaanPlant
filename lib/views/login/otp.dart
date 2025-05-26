@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gyaanplant_learning_app/components/login/login_widget.dart';
+import 'package:gyaanplant_learning_app/page_transition/page_transition.dart';
 import 'package:gyaanplant_learning_app/urls/url.dart';
 import 'package:gyaanplant_learning_app/views/role/role.dart';
 
@@ -23,12 +24,13 @@ class _OTPScreenState extends State<OTPScreen> {
 
         if (!mounted) return;
 
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ChooseRole(),
-          ),
-        );
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => ChooseRole(),
+        //   ),
+        // );
+        Navigator.push(context, SlideLeftRoute(page: const ChooseRole()));
       } else {
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(

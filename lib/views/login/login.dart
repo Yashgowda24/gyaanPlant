@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gyaanplant_learning_app/components/login/login_widget.dart';
+import 'package:gyaanplant_learning_app/page_transition/page_transition.dart';
 import 'package:gyaanplant_learning_app/urls/url.dart';
 import 'package:gyaanplant_learning_app/views/login/otp.dart';
 
@@ -44,11 +45,11 @@ class _LoginScreenState extends State<LoginScreen> {
         const SnackBar(content: Text('OTP sent successfully!')),
       );
       Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => OTPScreen(phoneNumber: phoneNumber),
-        ),
-      );
+          context,
+          // MaterialPageRoute(
+          //   builder: (context) => OTPScreen(phoneNumber: phoneNumber),
+          // ),
+          SlideLeftRoute(page: OTPScreen(phoneNumber: phoneNumber)));
     } else {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
